@@ -4,10 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ru.amlet.dto.Player;
-import ru.amlet.dto.Question;
+import ru.amlet.entity.Player;
+import ru.amlet.dto.QuestionDto;
+import ru.amlet.entity.Question;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -15,7 +17,7 @@ public class QuizServiceImpl {
 
     private final IOService ioService;
     private final QuestionServiceImpl questionService;
-    private Player player;
+    private final Player player;
     @Value("${not.less}")
     private int notLess;
 
@@ -23,51 +25,26 @@ public class QuizServiceImpl {
         List<Question> questions = questionService.getQuestions();
         for (Question question : questions) {
             ioService.printQuestion(question);
-            String answer = ioService.readAnswer();
+            String playersAnswer = ioService.readAnswer();
             if (question.getNumber() == 0) {
-                player.setName(answer);
+                player.setName(playersAnswer);
             } else {
-                countScore(question, answer);
+                countScore(question, playersAnswer);
             }
         }
-        ioService.printResult(createResultMessage());
+        ioService.printResult(player, player.getScore() > notLess);
     }
 
     private void countScore(Question question, String answer) {
-        try {
-            if (whatAnswerIsRight(question) == Integer.parseInt(answer)) {
-                player.setScore(player.getScore() + 1);
-            }
-        } catch (Exception e) {
-            if (StringUtils.equalsIgnoreCase("putin", answer)) {
-                player.setScore(player.getScore() + 1);
-            }
-            e.getMessage();
-        }
-    }
-
-    private int whatAnswerIsRight(Question question) {
-        int result = 0;
-        if (question.isFirstCorrect()) {
-            result = 1;
-        }
-        if (question.isSecondCorrect()) {
-            result = 2;
-        }
-        if (question.isThirdCorrect()) {
-            result = 3;
-        }
-        return result;
-    }
-
-    private String createResultMessage() {
-        String resultMessage = "Dear " + player.getName() + " your result: " + player.getScore();
-        if (player.getScore() > notLess) {
-            resultMessage = resultMessage + " it's good result. Congratulation!";
+        if (Objects.isNull(question.getAnswers()) &&
+                StringUtils.equalsIgnoreCase("putin", answer)) {
+            player.setScore(player.getScore() + 1);
         } else {
-            resultMessage = resultMessage + " it's a terrible result. Try again.";
+            Object isRight = question.getAnswers().get(answer);
+            if (Objects.nonNull(isRight) && (Boolean) isRight) {
+                player.setScore(player.getScore() + 1);
+            }
         }
-        return resultMessage;
     }
 
 }

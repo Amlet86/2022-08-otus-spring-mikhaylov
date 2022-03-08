@@ -3,10 +3,9 @@ package ru.amlet.dao;
 import com.opencsv.bean.CsvToBeanBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
-import ru.amlet.dto.Question;
-import ru.amlet.exception.ShitHappensException;
+import ru.amlet.dto.QuestionDto;
+import ru.amlet.exception.CsvReadException;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.net.URL;
 import java.util.List;
@@ -21,17 +20,17 @@ public class QuestionDaoCsv implements QuestionDao {
     }
 
     @Override
-    public List<Question> findQuestions() {
-        List<Question> questions;
+    public List<QuestionDto> findQuestions() {
+        List<QuestionDto> questionDtos;
         URL url = QuestionDaoCsv.class.getClassLoader().getResource(name);
-        try {
-            questions = new CsvToBeanBuilder(new FileReader(url.getPath()))
-                    .withType(Question.class)
+        try (FileReader fileReader = new FileReader(url.getPath())) {
+            questionDtos = new CsvToBeanBuilder(fileReader)
+                    .withType(QuestionDto.class)
                     .build()
                     .parse();
-        } catch (FileNotFoundException e) {
-            throw new ShitHappensException(e.getMessage());
+        } catch (Exception e) {
+            throw new CsvReadException(e.getMessage());
         }
-        return questions;
+        return questionDtos;
     }
 }

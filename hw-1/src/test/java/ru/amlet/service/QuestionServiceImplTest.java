@@ -7,10 +7,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.amlet.dao.QuestionDao;
-import ru.amlet.dto.Question;
+import ru.amlet.dto.QuestionDto;
 
 import java.util.Collections;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.BDDMockito.given;
 
@@ -32,9 +33,17 @@ public class QuestionServiceImplTest {
     @DisplayName("метод getQuestions возвращает не пустой список")
     void shouldReturnList() {
         given(questionDao.findQuestions())
-                .willReturn(Collections.singletonList(new Question()));
+                .willReturn(Collections.singletonList(new QuestionDto()));
+        assertFalse(questionService.getQuestionsDto().isEmpty());
+    }
 
-        assertFalse(questionService.getQuestions().isEmpty());
+    @Test
+    @DisplayName("метод getQuestions возвращает список содержащий объект класса Question")
+    void shouldContainsOnlyQuestionClasses() {
+        given(questionDao.findQuestions())
+                .willReturn(Collections.singletonList(new QuestionDto()));
+        questionService.getQuestionsDto()
+                .forEach(question -> assertEquals(question.getClass(), QuestionDto.class));
     }
 
 }

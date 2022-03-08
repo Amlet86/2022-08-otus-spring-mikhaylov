@@ -9,14 +9,12 @@ import ru.amlet.service.QuizServiceImpl;
 @Configuration
 @ComponentScan
 @PropertySource("classpath:application.properties")
-public class Start {
+public class AppStarter {
 
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context =
-                new AnnotationConfigApplicationContext(Start.class);
-
+                new AnnotationConfigApplicationContext(AppStarter.class);
         context.getBean(QuizServiceImpl.class).conducting();
-
         context.close();
     }
 

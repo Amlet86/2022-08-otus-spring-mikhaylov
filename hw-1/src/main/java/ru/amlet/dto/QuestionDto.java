@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Question {
+public class QuestionDto {
 
     @CsvBindByName(column = "number")
     private int number;
