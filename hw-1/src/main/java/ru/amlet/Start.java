@@ -1,18 +1,23 @@
 package ru.amlet;
 
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import ru.amlet.dto.Question;
-import ru.amlet.service.QuestionService;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import ru.amlet.service.QuizServiceImpl;
 
-import java.util.List;
-
+@Configuration
+@ComponentScan
+@PropertySource("classpath:application.properties")
 public class Start {
 
     public static void main(String[] args) {
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("/spring-context.xml");
-        QuestionService service = context.getBean(QuestionService.class);
-        List<Question> questions = service.getQuestions();
-        questions.forEach(question -> System.out.println(question.getQuestion()));
+        AnnotationConfigApplicationContext context =
+                new AnnotationConfigApplicationContext(Start.class);
+
+        context.getBean(QuizServiceImpl.class).conducting();
+
         context.close();
     }
+
 }

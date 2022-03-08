@@ -1,6 +1,8 @@
 package ru.amlet.dao;
 
 import com.opencsv.bean.CsvToBeanBuilder;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
 import ru.amlet.dto.Question;
 import ru.amlet.exception.ShitHappensException;
 
@@ -9,11 +11,12 @@ import java.io.FileReader;
 import java.net.URL;
 import java.util.List;
 
+@Repository
 public class QuestionDaoCsv implements QuestionDao {
 
     private final String name;
 
-    public QuestionDaoCsv(String name) {
+    public QuestionDaoCsv(@Value("${file.name}") String name) {
         this.name = name;
     }
 

@@ -7,7 +7,8 @@ import ru.amlet.exception.ShitHappensException;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("Имплементация класса QuestionDao")
 public class QuestionDaoCsvTest {
