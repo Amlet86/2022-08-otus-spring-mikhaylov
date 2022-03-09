@@ -8,11 +8,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.amlet.dao.QuestionDao;
 import ru.amlet.dto.QuestionDto;
+import ru.amlet.entity.Question;
 
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,12 +38,29 @@ public class QuestionServiceImplTest {
     }
 
     @Test
-    @DisplayName("метод getQuestions возвращает список содержащий объект класса Question")
-    void shouldContainsOnlyQuestionClasses() {
+    @DisplayName("метод getQuestions возвращает список содержащий объекты класса QuestionDto")
+    void shouldContainsOnlyQuestionDtoClasses() {
         given(questionDao.findQuestions())
                 .willReturn(Collections.singletonList(new QuestionDto()));
         questionService.getQuestionsDto()
                 .forEach(question -> assertEquals(question.getClass(), QuestionDto.class));
+    }
+
+    @Test
+    @DisplayName("метод getQuestions возвращает список содержащий объекты класса Question")
+    void shouldContainsOnlyQuestionClasses() {
+        given(questionDao.findQuestions())
+                .willReturn(Collections.singletonList(new QuestionDto()));
+        questionService.getQuestions()
+                .forEach(question -> assertEquals(question.getClass(), Question.class));
+    }
+
+    @Test
+    @DisplayName("метод convertQuestionFromQuestionDto преобразует объект класса QuestionDto в Question")
+    void shouldConvertQuestionDtoToQuestionClass() {
+        QuestionDto questionDto = new QuestionDto();
+        assertEquals(Question.class,
+                questionService.convertQuestionFromQuestionDto(questionDto).getClass());
     }
 
 }
