@@ -1,8 +1,10 @@
 package ru.amlet.service;
 
 import org.springframework.stereotype.Service;
+import ru.amlet.entity.Answer;
 import ru.amlet.entity.Player;
 import ru.amlet.entity.Question;
+import ru.amlet.entity.Test;
 
 import java.util.Objects;
 import java.util.Scanner;
@@ -19,7 +21,8 @@ public class IOServiceImpl implements IOService {
     @Override
     public void printQuestion(Question question) {
         System.out.println(question.getQuestion());
-        if (Objects.nonNull(question.getAnswers())) {
+        if (Objects.nonNull(question.getAnswers()) &&
+                !question.getAnswers().isEmpty()) {
             System.out.println(createAnswersLine(question));
         }
     }
@@ -32,20 +35,22 @@ public class IOServiceImpl implements IOService {
     private String createAnswersLine(Question question) {
         StringBuilder stringBuilder = new StringBuilder();
         int i = 1;
-        for (Object answer : question.getAnswers().keySet()) {
-            stringBuilder.append(i + ".").append(answer).append(" ");
+        for (Answer answer : question.getAnswers()) {
+            stringBuilder.append(i).append(".").append(answer.getTextAnswer()).append(" ");
             i++;
         }
         return String.valueOf(stringBuilder);
     }
 
     @Override
-    public void printResult(Player player, boolean isWin) {
-        System.out.println(createResultMessage(player, isWin));
+    public void printResult(Test test, boolean isWin) {
+        System.out.println(createResultMessage(test, isWin));
     }
 
-    private String createResultMessage(Player player, boolean isWin) {
-        String resultMessage = "Dear " + player.getName() + " your result: " + player.getScore();
+    private String createResultMessage(Test test, boolean isWin) {
+        Player player = test.getPlayer();
+        int score = test.getScore();
+        String resultMessage = "Dear " + player.getName() + " your result: " + score;
         if (isWin) {
             resultMessage = resultMessage + " it's good result. Congratulation!";
         } else {

@@ -1,10 +1,10 @@
 package ru.amlet.service;
 
-import ru.amlet.dto.QuestionDto;
+import ru.amlet.entity.Question;
 
 import java.util.List;
 
 public interface QuestionService {
 
-    List<QuestionDto> getQuestionsDto();
+    List<Question> getQuestions();
 }

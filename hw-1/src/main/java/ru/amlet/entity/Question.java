@@ -2,19 +2,21 @@ package ru.amlet.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.stereotype.Component;
 
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.List;
 
 @Getter
 @Setter
-@Component
 public class Question {
 
     private int number;
 
     private String question;
 
-    private Map answers;
+    private List<Answer> answers;
 
+    public Question() {
+        this.answers = new LinkedList<>();
+    }
 }

@@ -1,7 +1,7 @@
 package ru.amlet.service;
 
-import ru.amlet.entity.Player;
 import ru.amlet.entity.Question;
+import ru.amlet.entity.Test;
 
 public interface IOService {
 
@@ -9,6 +9,6 @@ public interface IOService {
 
     String readAnswer();
 
-    void printResult(Player player, boolean isWin);
+    void printResult(Test test, boolean isWin);
 
 }

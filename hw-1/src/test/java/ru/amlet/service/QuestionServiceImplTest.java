@@ -33,34 +33,17 @@ public class QuestionServiceImplTest {
     @DisplayName("метод getQuestions возвращает не пустой список")
     void shouldReturnList() {
         given(questionDao.findQuestions())
-                .willReturn(Collections.singletonList(new QuestionDto()));
-        assertFalse(questionService.getQuestionsDto().isEmpty());
-    }
-
-    @Test
-    @DisplayName("метод getQuestions возвращает список содержащий объекты класса QuestionDto")
-    void shouldContainsOnlyQuestionDtoClasses() {
-        given(questionDao.findQuestions())
-                .willReturn(Collections.singletonList(new QuestionDto()));
-        questionService.getQuestionsDto()
-                .forEach(question -> assertEquals(question.getClass(), QuestionDto.class));
+                .willReturn(Collections.singletonList(new Question()));
+        assertFalse(questionService.getQuestions().isEmpty());
     }
 
     @Test
     @DisplayName("метод getQuestions возвращает список содержащий объекты класса Question")
     void shouldContainsOnlyQuestionClasses() {
         given(questionDao.findQuestions())
-                .willReturn(Collections.singletonList(new QuestionDto()));
+                .willReturn(Collections.singletonList(new Question()));
         questionService.getQuestions()
                 .forEach(question -> assertEquals(question.getClass(), Question.class));
-    }
-
-    @Test
-    @DisplayName("метод convertQuestionFromQuestionDto преобразует объект класса QuestionDto в Question")
-    void shouldConvertQuestionDtoToQuestionClass() {
-        QuestionDto questionDto = new QuestionDto();
-        assertEquals(Question.class,
-                questionService.convertQuestionFromQuestionDto(questionDto).getClass());
     }
 
 }
