@@ -1,0 +1,7 @@
+number,question,first answer,is first correct,second answer,is second correct,third answer,is third correct
+0,what is your name?,,,,,,
+1,which city is the capital of Britain?,London,true,Derby,false,Wells,false
+2,what is the longest river?,Amazon,false,Nile,true,Yangtze,false
+3,which continent is the largest?,Africa,false,Antarctica,false,Eurasia,true
+4,which mountain is the highest?,Everest,true,K2,false,Kangchenjunga,false
+5,who is the next president of Russia?,,,,,,
