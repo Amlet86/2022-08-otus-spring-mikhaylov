@@ -1,13 +1,11 @@
 package ru.amlet.service;
 
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.amlet.entity.Answer;
-import ru.amlet.entity.Player;
 import ru.amlet.entity.Question;
-import ru.amlet.entity.Test;
+import ru.amlet.entity.Quiz;
 
 import java.util.List;
 import java.util.Objects;
@@ -28,20 +26,19 @@ public class QuizServiceImpl {
     }
 
     public void conducting() {
-        Test test = new Test();
+        Quiz quiz = new Quiz(lowestPassingScore);
         List<Question> questions = questionService.getQuestions();
         for (Question question : questions) {
             ioService.printQuestion(question);
             String playersAnswer = ioService.readAnswer();
             if (question.getNumber() == 0) {
-                test.getPlayer().setName(playersAnswer);
+                quiz.getPlayer().setName(playersAnswer);
             } else {
-                int tempScore = test.getScore() + countScore(question, playersAnswer);
-                test.setScore(tempScore);
+                int tempScore = quiz.getScore() + countScore(question, playersAnswer);
+                quiz.setScore(tempScore);
             }
         }
-        boolean isWin = test.getScore() > lowestPassingScore;
-        ioService.printResult(test, isWin);
+        ioService.printResult(quiz);
     }
 
     private int countScore(Question question, String usersAnswer) {

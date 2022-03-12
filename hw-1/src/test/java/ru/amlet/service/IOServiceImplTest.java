@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.amlet.entity.Question;
+import ru.amlet.entity.Quiz;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -33,11 +34,11 @@ public class IOServiceImplTest {
     @Test
     @DisplayName("метод printResult создаёт сообщение о положительном результате и выводит его на console")
     void printResultShouldCreatePositiveMessageAndPutInConsole(){
-        ru.amlet.entity.Test test = new ru.amlet.entity.Test();
-        test.getPlayer().setName("Andrey");
-        test.setScore(5);
+        Quiz quiz = new Quiz(3);
+        quiz.getPlayer().setName("Andrey");
+        quiz.setScore(5);
         IOServiceImpl ioService = new IOServiceImpl();
-        ioService.printResult(test, true);
+        ioService.printResult(quiz);
         assertEquals("Dear Andrey your result: 5 it's good result. Congratulation!\n",
                 outputStreamCaptor.toString());
     }
@@ -45,11 +46,11 @@ public class IOServiceImplTest {
     @Test
     @DisplayName("метод printResult создаёт сообщение об отрицательном результате и выводит его на console")
     void printResultShouldCreateNegativeMessageAndPutInConsole(){
-        ru.amlet.entity.Test test = new ru.amlet.entity.Test();
-        test.getPlayer().setName("Andrey");
-        test.setScore(1);
+        Quiz quiz = new Quiz(3);
+        quiz.getPlayer().setName("Andrey");
+        quiz.setScore(1);
         IOServiceImpl ioService = new IOServiceImpl();
-        ioService.printResult(test, false);
+        ioService.printResult(quiz);
         assertEquals("Dear Andrey your result: 1 it's a terrible result. Try again.\n",
                 outputStreamCaptor.toString());
     }

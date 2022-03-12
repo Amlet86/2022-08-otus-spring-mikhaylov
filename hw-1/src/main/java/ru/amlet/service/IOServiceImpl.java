@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import ru.amlet.entity.Answer;
 import ru.amlet.entity.Player;
 import ru.amlet.entity.Question;
-import ru.amlet.entity.Test;
+import ru.amlet.entity.Quiz;
 
 import java.util.Objects;
 import java.util.Scanner;
@@ -43,16 +43,15 @@ public class IOServiceImpl implements IOService {
     }
 
     @Override
-    public void printResult(Test test, boolean isWin) {
-        System.out.println(createResultMessage(test, isWin));
+    public void printResult(Quiz quiz) {
+        System.out.println(createResultMessage(quiz));
     }
 
-    private String createResultMessage(Test test, boolean isWin) {
-        Player player = test.getPlayer();
-        int score = test.getScore();
-        String resultMessage = "Dear " + player.getName() + " your result: " + score;
-        if (isWin) {
-            resultMessage = resultMessage + " it's good result. Congratulation!";
+    private String createResultMessage(Quiz quiz) {
+        Player player = quiz.getPlayer();
+        String resultMessage = "Dear " + player.getName() + " your result: " + quiz.getScore();
+        if (quiz.isWin()) {
+            resultMessage = resultMessage + " it's a good result. Congratulation!";
         } else {
             resultMessage = resultMessage + " it's a terrible result. Try again.";
         }
