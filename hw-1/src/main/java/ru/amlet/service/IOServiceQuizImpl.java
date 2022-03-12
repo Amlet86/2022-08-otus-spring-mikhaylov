@@ -6,30 +6,44 @@ import ru.amlet.entity.Player;
 import ru.amlet.entity.Question;
 import ru.amlet.entity.Quiz;
 
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.Objects;
 import java.util.Scanner;
 
 @Service
-public class IOServiceImpl implements IOService {
+public class IOServiceQuizImpl implements IOServiceQuiz, IOService {
 
-    private final Scanner scanner;
+    private final Scanner input;
+    private final PrintStream output;
 
-    public IOServiceImpl() {
-        this.scanner = new Scanner(System.in);
+    public IOServiceQuizImpl(InputStream inputStream, PrintStream outputStream) {
+        this.input = new Scanner(inputStream);
+        this.output = outputStream;
     }
 
     @Override
-    public void printQuestion(Question question) {
-        System.out.println(question.getQuestion());
+    public void writeString(String s) {
+        output.println(s);
+    }
+
+    @Override
+    public String readString() {
+        return input.nextLine();
+    }
+
+    @Override
+    public void putQuestion(Question question) {
+        writeString(question.getQuestion());
         if (Objects.nonNull(question.getAnswers()) &&
                 !question.getAnswers().isEmpty()) {
-            System.out.println(createAnswersLine(question));
+            writeString(createAnswersLine(question));
         }
     }
 
     @Override
-    public String readAnswer() {
-        return scanner.nextLine();
+    public String getAnswer() {
+        return readString();
     }
 
     private String createAnswersLine(Question question) {
@@ -43,8 +57,8 @@ public class IOServiceImpl implements IOService {
     }
 
     @Override
-    public void printResult(Quiz quiz) {
-        System.out.println(createResultMessage(quiz));
+    public void putResult(Quiz quiz) {
+        writeString(createResultMessage(quiz));
     }
 
     private String createResultMessage(Quiz quiz) {
@@ -57,5 +71,4 @@ public class IOServiceImpl implements IOService {
         }
         return resultMessage;
     }
-
 }

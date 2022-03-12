@@ -1,10 +1,10 @@
 package ru.amlet;
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import ru.amlet.service.QuizServiceImpl;
+
+import java.io.InputStream;
+import java.io.PrintStream;
 
 @Configuration
 @ComponentScan
@@ -18,4 +18,13 @@ public class AppStarter {
         context.close();
     }
 
+    @Bean
+    public InputStream inputStream() {
+        return System.in;
+    }
+
+    @Bean
+    public PrintStream printStream() {
+        return System.out;
+    }
 }

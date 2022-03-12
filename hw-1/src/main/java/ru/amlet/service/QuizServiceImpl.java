@@ -13,14 +13,14 @@ import java.util.Objects;
 @Service
 public class QuizServiceImpl {
 
-    private final IOService ioService;
+    private final IOServiceQuiz ioServiceQuiz;
     private final QuestionService questionService;
     private final int lowestPassingScore;
 
-    public QuizServiceImpl(IOService ioService,
+    public QuizServiceImpl(IOServiceQuiz ioServiceQuiz,
                            QuestionService questionService,
                            @Value("${lowest.passing.score}") int lowestPassingScore) {
-        this.ioService = ioService;
+        this.ioServiceQuiz = ioServiceQuiz;
         this.questionService = questionService;
         this.lowestPassingScore = lowestPassingScore;
     }
@@ -29,8 +29,8 @@ public class QuizServiceImpl {
         Quiz quiz = new Quiz(lowestPassingScore);
         List<Question> questions = questionService.getQuestions();
         for (Question question : questions) {
-            ioService.printQuestion(question);
-            String playersAnswer = ioService.readAnswer();
+            ioServiceQuiz.putQuestion(question);
+            String playersAnswer = ioServiceQuiz.getAnswer();
             if (question.getNumber() == 0) {
                 quiz.getPlayer().setName(playersAnswer);
             } else {
@@ -38,12 +38,12 @@ public class QuizServiceImpl {
                 quiz.setScore(tempScore);
             }
         }
-        ioService.printResult(quiz);
+        ioServiceQuiz.putResult(quiz);
     }
 
     private int countScore(Question question, String usersAnswer) {
         int result = 0;
-        if (Objects.isNull(question.getAnswers()) &&
+        if ((Objects.isNull(question.getAnswers()) || question.getAnswers().isEmpty()) &&
                 StringUtils.equalsIgnoreCase("putin", usersAnswer)) {
             result = 1;
         } else {

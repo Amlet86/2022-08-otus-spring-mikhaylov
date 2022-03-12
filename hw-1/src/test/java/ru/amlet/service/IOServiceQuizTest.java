@@ -12,7 +12,7 @@ import java.io.PrintStream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("Имплементация класса IOService")
-public class IOServiceImplTest {
+public class IOServiceQuizTest {
 
     private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
 
@@ -26,8 +26,8 @@ public class IOServiceImplTest {
     void printQuestionShouldPutStringInConsole(){
         Question question = new Question();
         question.setQuestion("questionsText");
-        IOServiceImpl ioService = new IOServiceImpl();
-        ioService.printQuestion(question);
+        IOServiceQuizImpl ioService = new IOServiceQuizImpl(System.in, System.out);
+        ioService.putQuestion(question);
         assertEquals("questionsText\n", outputStreamCaptor.toString());
     }
 
@@ -37,9 +37,9 @@ public class IOServiceImplTest {
         Quiz quiz = new Quiz(3);
         quiz.getPlayer().setName("Andrey");
         quiz.setScore(5);
-        IOServiceImpl ioService = new IOServiceImpl();
-        ioService.printResult(quiz);
-        assertEquals("Dear Andrey your result: 5 it's good result. Congratulation!\n",
+        IOServiceQuizImpl ioService = new IOServiceQuizImpl(System.in, System.out);
+        ioService.putResult(quiz);
+        assertEquals("Dear Andrey your result: 5 it's a good result. Congratulation!\n",
                 outputStreamCaptor.toString());
     }
 
@@ -49,8 +49,8 @@ public class IOServiceImplTest {
         Quiz quiz = new Quiz(3);
         quiz.getPlayer().setName("Andrey");
         quiz.setScore(1);
-        IOServiceImpl ioService = new IOServiceImpl();
-        ioService.printResult(quiz);
+        IOServiceQuizImpl ioService = new IOServiceQuizImpl(System.in, System.out);
+        ioService.putResult(quiz);
         assertEquals("Dear Andrey your result: 1 it's a terrible result. Try again.\n",
                 outputStreamCaptor.toString());
     }
