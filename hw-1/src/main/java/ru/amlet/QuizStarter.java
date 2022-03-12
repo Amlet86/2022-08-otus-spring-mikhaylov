@@ -9,11 +9,11 @@ import java.io.PrintStream;
 @Configuration
 @ComponentScan
 @PropertySource("classpath:application.properties")
-public class AppStarter {
+public class QuizStarter {
 
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context =
-                new AnnotationConfigApplicationContext(AppStarter.class);
+                new AnnotationConfigApplicationContext(QuizStarter.class);
         context.getBean(QuizServiceImpl.class).conducting();
         context.close();
     }

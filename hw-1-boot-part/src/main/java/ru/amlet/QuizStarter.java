@@ -10,10 +10,10 @@ import java.io.InputStream;
 import java.io.PrintStream;
 
 @SpringBootApplication
-public class Application {
+public class QuizStarter {
 
 	public static void main(String[] args) {
-		ApplicationContext ctx = SpringApplication.run(Application.class, args);
+		ApplicationContext ctx = SpringApplication.run(QuizStarter.class, args);
 		ctx.getBean(QuizServiceImpl.class).conducting();
 	}
 
