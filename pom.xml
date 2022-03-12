@@ -11,55 +11,7 @@
 
     <modules>
         <module>hw-1</module>
+        <module>hw-1-boot-part</module>
     </modules>
-
-    <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <org.apache.maven.plugins.enforcer>3.0.0</org.apache.maven.plugins.enforcer>
-        <org.projectlombok.lombok>1.18.22</org.projectlombok.lombok>
-        <org.springframework.spring-context>5.3.16</org.springframework.spring-context>
-    </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>${org.projectlombok.lombok}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
-                <version>${org.springframework.spring-context}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>${org.apache.maven.plugins.enforcer}</version>
-                    <executions>
-                        <execution>
-                            <id>enforce</id>
-                            <configuration>
-                                <rules>
-                                    <dependencyConvergence/>
-                                </rules>
-                            </configuration>
-                            <goals>
-                                <goal>enforce</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
 
 </project>
