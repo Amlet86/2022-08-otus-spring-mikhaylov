@@ -7,7 +7,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.amlet.dao.QuestionDao;
-import ru.amlet.dto.QuestionDto;
 import ru.amlet.entity.Question;
 
 import java.util.Collections;
@@ -31,7 +30,7 @@ public class QuestionServiceImplTest {
 
     @Test
     @DisplayName("метод getQuestions возвращает не пустой список")
-    void shouldReturnList() {
+    void shouldReturnIntEmptyList() {
         given(questionDao.findQuestions())
                 .willReturn(Collections.singletonList(new Question()));
         assertFalse(questionService.getQuestions().isEmpty());

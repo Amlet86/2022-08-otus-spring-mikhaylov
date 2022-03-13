@@ -9,6 +9,9 @@ import ru.amlet.exception.CsvReadException;
 import ru.amlet.utility.QuestionConverter;
 
 import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.URL;
 import java.util.List;
 
@@ -26,9 +29,9 @@ public class QuestionDaoCsv implements QuestionDao {
     @Override
     public List<Question> findQuestions() {
         List<QuestionDto> questionsDto;
-        URL url = QuestionDaoCsv.class.getClassLoader().getResource(name);
-        try (FileReader fileReader = new FileReader(url.getPath())) {
-            questionsDto = new CsvToBeanBuilder(fileReader)
+        InputStream inputStream = QuestionDaoCsv.class.getClassLoader().getResourceAsStream(name);
+        try (Reader reader = new InputStreamReader(inputStream)) {
+            questionsDto = new CsvToBeanBuilder<QuestionDto>(reader)
                     .withType(QuestionDto.class)
                     .build()
                     .parse();

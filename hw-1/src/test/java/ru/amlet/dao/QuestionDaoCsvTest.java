@@ -26,7 +26,7 @@ public class QuestionDaoCsvTest {
     @DisplayName("метод findQuestions, прочитав csv, возвращает список из 6 объектов")
     void csvFileShouldContainsSixQuestions() {
         QuestionDaoCsv questionDao = new QuestionDaoCsv(csvName, questionConverter);
-        assertEquals(6, questionDao.findQuestions().size());
+        assertEquals(5, questionDao.findQuestions().size());
     }
 
     @Test
@@ -38,9 +38,9 @@ public class QuestionDaoCsvTest {
     }
 
     @Test
-    @DisplayName("метод findQuestions кидает исключение, если csv не прочитан")
+    @DisplayName("метод findQuestions кидает CsvReadException, если csv не прочитан")
     void getQuestionsShouldReturnIsEmptyList() {
-        QuestionDaoCsv questionDao = new QuestionDaoCsv("", questionConverter);
+        QuestionDaoCsv questionDao = new QuestionDaoCsv("wrongFileName", questionConverter);
         assertThrows(CsvReadException.class, questionDao::findQuestions);
     }
 

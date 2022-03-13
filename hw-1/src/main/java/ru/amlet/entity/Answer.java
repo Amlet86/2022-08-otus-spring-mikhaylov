@@ -9,7 +9,7 @@ public class Answer {
 
     private String textAnswer;
 
-    boolean correct;
+    private boolean correct;
 
     public Answer(String textAnswer, boolean correct) {
         this.textAnswer = textAnswer;
