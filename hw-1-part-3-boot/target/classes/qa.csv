@@ -1,5 +1,4 @@
 number,question,first answer,is first correct,second answer,is second correct,third answer,is third correct
-0,question.zero,,,,,,
 1,question.first,answer.first,true,answer.second,false,answer.third,false
 2,question.second,answer.first,false,answer.second,true,answer.third,false
 3,question.third,answer.first,false,answer.second,false,answer.third,true

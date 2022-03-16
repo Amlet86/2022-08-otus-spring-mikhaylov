@@ -18,19 +18,4 @@ public class QuizStarter {
         ctx.getBean(QuizServiceImpl.class).conducting();
     }
 
-    @Bean
-    public InputStream inputStream() {
-        return System.in;
-    }
-
-    @Bean
-    public PrintStream printStream() {
-        return System.out;
-    }
-
-    @Bean
-    public Locale locale() {
-        return new Locale(System.getProperties().getProperty("user.language"));
-    }
-
 }
