@@ -1,0 +1,5 @@
+file:
+  name: qa.csv
+lowest:
+  passing:
+    score: '3'
