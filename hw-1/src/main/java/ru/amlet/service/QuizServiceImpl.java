@@ -1,6 +1,5 @@
 package ru.amlet.service;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.amlet.entity.Answer;
@@ -16,46 +15,52 @@ public class QuizServiceImpl implements QuizService {
 
     private final IOService ioService;
     private final QuestionService questionService;
+    private final MessageConstructor messageConstructor;
+    private final LeadingScoreService leadingScoreService;
     private final int lowestPassingScore;
     private final String greetingAndAcquaintance;
 
     public QuizServiceImpl(IOService ioService,
                            QuestionService questionService,
+                           MessageConstructor messageConstructor,
+                           LeadingScoreService leadingScoreService,
                            @Value("${lowest.passing.score}") int lowestPassingScore,
                            @Value("${greeting.acquaintance}") String greetingAndAcquaintance) {
         this.ioService = ioService;
         this.questionService = questionService;
+        this.messageConstructor = messageConstructor;
+        this.leadingScoreService = leadingScoreService;
         this.lowestPassingScore = lowestPassingScore;
         this.greetingAndAcquaintance = greetingAndAcquaintance;
     }
 
     @Override
     public void conducting() {
-        Quiz quiz = new Quiz(lowestPassingScore);
-        String playersName = greetingAndAcquaintance();
-        quiz.getPlayer().setName(playersName);
+        Player player = greetingAndAcquaintance();
+        Quiz quiz = new Quiz(player, lowestPassingScore);
 
         List<Question> questions = questionService.getQuestions();
         for (Question question : questions) {
-            putQuestion(question);
-            String playersAnswer = getAnswer();
-            int tempScore = quiz.getScore() + countScore(question, playersAnswer);
-            quiz.setScore(tempScore);
+            askQuestion(question);
+            Answer playersAnswer = new Answer(getAnswer());
+            quiz.incrementScore(leadingScoreService.countScore(question, playersAnswer));
         }
-        putResult(quiz);
+        outputResult(quiz);
     }
 
-    private String greetingAndAcquaintance() {
+    private Player greetingAndAcquaintance() {
         ioService.writeString(greetingAndAcquaintance);
-        return getAnswer();
+        String name = getAnswer();
+        return new Player(name);
     }
 
     @Override
-    public void putQuestion(Question question) {
+    public void askQuestion(Question question) {
         ioService.writeString(question.getQuestion());
         if (Objects.nonNull(question.getAnswers()) &&
                 !question.getAnswers().isEmpty()) {
-            ioService.writeString(createAnswersLine(question));
+            String questionText = messageConstructor.createAnswerMessage(question);
+            ioService.writeString(questionText);
         }
     }
 
@@ -64,49 +69,10 @@ public class QuizServiceImpl implements QuizService {
         return ioService.readString();
     }
 
-    private String createAnswersLine(Question question) {
-        StringBuilder stringBuilder = new StringBuilder();
-        int i = 1;
-        for (Answer answer : question.getAnswers()) {
-            stringBuilder.append(i).append(".").append(answer.getTextAnswer()).append(" ");
-            i++;
-        }
-        return String.valueOf(stringBuilder);
-    }
-
-    private int countScore(Question question, String usersAnswer) {
-        int result = 0;
-        if ((Objects.isNull(question.getAnswers()) || question.getAnswers().isEmpty()) &&
-                StringUtils.equalsIgnoreCase("putin", usersAnswer)) {
-            result = 1;
-        } else {
-            boolean isRight = question.getAnswers().stream()
-                    .filter(answer -> StringUtils.equalsIgnoreCase(answer.getTextAnswer(), usersAnswer))
-                    .map(Answer::isCorrect)
-                    .findFirst()
-                    .orElse(false);
-
-            if (isRight) {
-                result = 1;
-            }
-        }
-        return result;
-    }
-
     @Override
-    public void putResult(Quiz quiz) {
-        ioService.writeString(createResultMessage(quiz));
-    }
-
-    private String createResultMessage(Quiz quiz) {
-        Player player = quiz.getPlayer();
-        String resultMessage = "Dear " + player.getName() + " your result: " + quiz.getScore();
-        if (quiz.isWin()) {
-            resultMessage = resultMessage + " it's a good result. Congratulation!";
-        } else {
-            resultMessage = resultMessage + " it's a terrible result. Try again.";
-        }
-        return resultMessage;
+    public void outputResult(Quiz quiz) {
+        String resultText = messageConstructor.createResultMessage(quiz);
+        ioService.writeString(resultText);
     }
 
 }

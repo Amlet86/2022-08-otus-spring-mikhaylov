@@ -15,13 +15,17 @@ public class Quiz {
 
     private int score;
 
-    public Quiz(int lowestPassingScore) {
+    public Quiz(Player player, int lowestPassingScore) {
+        this.player = player;
         this.lowestPassingScore = lowestPassingScore;
-        this.player = new Player();
     }
 
     public boolean isWin() {
         return score > lowestPassingScore;
+    }
+
+    public void incrementScore(int increment) {
+        score += increment;
     }
 
 }

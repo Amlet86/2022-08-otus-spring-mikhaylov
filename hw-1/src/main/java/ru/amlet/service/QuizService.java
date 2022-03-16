@@ -7,9 +7,9 @@ public interface QuizService {
 
     void conducting();
 
-    void putQuestion(Question question);
+    void askQuestion(Question question);
 
     String getAnswer();
 
-    void putResult(Quiz quiz);
+    void outputResult(Quiz quiz);
 }
