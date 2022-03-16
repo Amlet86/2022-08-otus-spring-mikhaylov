@@ -1,6 +1,6 @@
 package ru.amlet.service;
 
-import ru.amlet.dto.Question;
+import ru.amlet.entity.Question;
 
 import java.util.List;
 
