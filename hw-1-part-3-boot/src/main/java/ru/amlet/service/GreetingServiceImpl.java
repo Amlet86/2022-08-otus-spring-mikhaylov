@@ -1,5 +1,6 @@
 package ru.amlet.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.amlet.entity.Player;
 
@@ -10,18 +11,20 @@ public class GreetingServiceImpl implements GreetingService {
 
     private final BundleService bundleService;
     private final IOService ioService;
-    private final static String BUNDLE_KEY = "greeting.acquaintance";
+    private final String bundleKey;
 
     public GreetingServiceImpl(BundleService bundleService,
-                               IOService ioService) {
+                               IOService ioService,
+                               @Value("${bundle.key}") String bundleKey) {
         this.bundleService = bundleService;
         this.ioService = ioService;
+        this.bundleKey = bundleKey;
     }
 
     @Override
     public Player greetingAndAcquaintance() {
         ResourceBundle resourceBundle = bundleService.getLocaleBundle();
-        String greetingAndAcquaintance = (String) resourceBundle.getObject(BUNDLE_KEY);
+        String greetingAndAcquaintance = (String) resourceBundle.getObject(bundleKey);
         ioService.writeString(greetingAndAcquaintance);
         String name = ioService.readString();
         return new Player(name);

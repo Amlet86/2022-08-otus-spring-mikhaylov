@@ -5,7 +5,10 @@ file:
 
 bundle:
   name: messages
+  key: greeting.acquaintance
 
 lowest:
   passing:
     score: '3'
+
+locale: ru
