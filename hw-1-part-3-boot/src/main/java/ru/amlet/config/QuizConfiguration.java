@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ru.amlet.service.IOService;
 import ru.amlet.service.IOServiceImpl;
+import ru.amlet.service.LocalizationService;
+import ru.amlet.service.LocalizationServiceImpl;
 
 import java.util.Locale;
 
@@ -16,8 +18,7 @@ public class QuizConfiguration {
     }
 
     @Bean
-    public Locale locale() {
-        return new Locale(System.getProperties().getProperty("user.language"));
+    public LocalizationService localizationService() {
+        return new LocalizationServiceImpl(new Locale(System.getProperties().getProperty("user.language")));
     }
-
 }

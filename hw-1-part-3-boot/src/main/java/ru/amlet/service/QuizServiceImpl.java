@@ -14,29 +14,29 @@ import java.util.Objects;
 public class QuizServiceImpl implements QuizService {
 
     private final IOService ioService;
+    private final GreetingService greetingService;
     private final QuestionService questionService;
     private final MessageConstructor messageConstructor;
     private final LeadingScoreService leadingScoreService;
     private final int lowestPassingScore;
-    private final String greetingAndAcquaintance;
 
     public QuizServiceImpl(IOService ioService,
+                           GreetingService greetingService,
                            QuestionService questionService,
                            MessageConstructor messageConstructor,
                            LeadingScoreService leadingScoreService,
-                           @Value("${lowest.passing.score}") int lowestPassingScore,
-                           @Value("${greeting.acquaintance}") String greetingAndAcquaintance) {
+                           @Value("${lowest.passing.score}") int lowestPassingScore) {
         this.ioService = ioService;
+        this.greetingService = greetingService;
         this.questionService = questionService;
         this.messageConstructor = messageConstructor;
         this.leadingScoreService = leadingScoreService;
         this.lowestPassingScore = lowestPassingScore;
-        this.greetingAndAcquaintance = greetingAndAcquaintance;
     }
 
     @Override
     public void conducting() {
-        Player player = greetingAndAcquaintance();
+        Player player = greetingService.greetingAndAcquaintance();
         Quiz quiz = new Quiz(player, lowestPassingScore);
 
         List<Question> questions = questionService.getQuestions();
@@ -46,12 +46,6 @@ public class QuizServiceImpl implements QuizService {
             quiz.incrementScore(leadingScoreService.countScore(question, playersAnswer));
         }
         outputResult(quiz);
-    }
-
-    private Player greetingAndAcquaintance() {
-        ioService.writeString(greetingAndAcquaintance);
-        String name = getAnswer();
-        return new Player(name);
     }
 
     @Override

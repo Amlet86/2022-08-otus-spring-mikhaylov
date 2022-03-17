@@ -3,11 +3,10 @@ package amlet.utility;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import ru.amlet.dto.QuestionDto;
 import ru.amlet.entity.Question;
 import ru.amlet.utility.QuestionConverter;
-import ru.amlet.utility.QuizLocalization;
+import ru.amlet.service.LocalizationServiceImpl;
 
 import java.util.Collections;
 import java.util.List;
@@ -17,9 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DisplayName("Класс QuestionConverter")
 public class QuestionConverterTest {
 
-    @Autowired
-    private QuizLocalization quizLocalization;
-    private final QuestionConverter questionConverter = new QuestionConverter(quizLocalization);
+    private final QuestionConverter questionConverter = new QuestionConverter();
 
     @Test
     @DisplayName("метод convertQuestion преобразует объект класса QuestionDto в Question")

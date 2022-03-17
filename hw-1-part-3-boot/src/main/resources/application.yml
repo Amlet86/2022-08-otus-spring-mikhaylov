@@ -1,7 +1,11 @@
 file:
-  name: qa.csv
+  name:
+    en: qa_en.csv
+    ru: qa_ru.csv
+
+bundle:
+  name: messages
+
 lowest:
   passing:
     score: '3'
-greeting:
-  acquaintance: Hello! What is your name?
