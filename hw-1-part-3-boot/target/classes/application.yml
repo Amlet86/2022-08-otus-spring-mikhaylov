@@ -1,7 +1,0 @@
-file:
-  name: qa.csv
-lowest:
-  passing:
-    score: '3'
-greeting:
-  acquaintance: Hello! What is your name?
