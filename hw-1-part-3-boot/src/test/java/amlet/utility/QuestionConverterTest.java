@@ -31,6 +31,6 @@ public class QuestionConverterTest {
     void shouldConvertQuestionDtoListToQuestionClassList() {
         List<QuestionDto> questionDto = Collections.singletonList(new QuestionDto());
         questionConverter.convertListQuestions(questionDto)
-                .forEach(question -> assertEquals(question.getClass(), Question.class));
+                .forEach(question -> assertEquals(Question.class, question.getClass()));
     }
 }

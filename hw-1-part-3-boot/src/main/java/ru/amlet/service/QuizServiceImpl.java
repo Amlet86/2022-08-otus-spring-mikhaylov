@@ -16,20 +16,20 @@ public class QuizServiceImpl implements QuizService {
     private final IOService ioService;
     private final GreetingService greetingService;
     private final QuestionService questionService;
-    private final MessageConstructor messageConstructor;
+    private final MessageConstructorService messageConstructorService;
     private final LeadingScoreService leadingScoreService;
     private final int lowestPassingScore;
 
     public QuizServiceImpl(IOService ioService,
                            GreetingService greetingService,
                            QuestionService questionService,
-                           MessageConstructor messageConstructor,
+                           MessageConstructorService messageConstructorService,
                            LeadingScoreService leadingScoreService,
                            @Value("${lowest.passing.score}") int lowestPassingScore) {
         this.ioService = ioService;
         this.greetingService = greetingService;
         this.questionService = questionService;
-        this.messageConstructor = messageConstructor;
+        this.messageConstructorService = messageConstructorService;
         this.leadingScoreService = leadingScoreService;
         this.lowestPassingScore = lowestPassingScore;
     }
@@ -53,7 +53,7 @@ public class QuizServiceImpl implements QuizService {
         ioService.writeString(question.getQuestion());
         if (Objects.nonNull(question.getAnswers()) &&
                 !question.getAnswers().isEmpty()) {
-            String questionText = messageConstructor.createAnswerMessage(question);
+            String questionText = messageConstructorService.createAnswerMessage(question);
             ioService.writeString(questionText);
         }
     }
@@ -65,7 +65,7 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     public void outputResult(Quiz quiz) {
-        String resultText = messageConstructor.createResultMessage(quiz);
+        String resultText = messageConstructorService.createResultMessage(quiz);
         ioService.writeString(resultText);
     }
 

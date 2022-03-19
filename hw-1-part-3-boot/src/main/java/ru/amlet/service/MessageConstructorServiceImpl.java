@@ -7,7 +7,7 @@ import ru.amlet.entity.Question;
 import ru.amlet.entity.Quiz;
 
 @Service
-public class MessageConstructorImpl implements MessageConstructor {
+public class MessageConstructorServiceImpl implements MessageConstructorService {
 
     @Override
     public String createAnswerMessage(Question question) {

@@ -39,11 +39,12 @@ public class QuestionDaoCsv implements QuestionDao {
 
     @Override
     public List<Question> findQuestions() {
-        List<QuestionDto> questionsDto;
         Locale locale = localizationService.getLocale();
         String fileName = name.get(locale.toLanguageTag());
-        InputStream inputStream = QuestionDaoCsv.class.getClassLoader().getResourceAsStream(fileName);
-        try (Reader reader = new InputStreamReader(inputStream)) {
+
+        List<QuestionDto> questionsDto;
+        try (InputStream inputStream = QuestionDaoCsv.class.getClassLoader().getResourceAsStream(fileName);
+             Reader reader = new InputStreamReader(inputStream)) {
             questionsDto = new CsvToBeanBuilder<QuestionDto>(reader)
                     .withType(QuestionDto.class)
                     .build()
@@ -51,7 +52,7 @@ public class QuestionDaoCsv implements QuestionDao {
         } catch (Exception e) {
             throw new CsvReadException(e.getMessage());
         }
+
         return questionConverter.convertListQuestions(questionsDto);
     }
-
 }

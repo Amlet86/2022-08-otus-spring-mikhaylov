@@ -11,7 +11,7 @@ public class BundleServiceImpl implements BundleService {
     private final LocalizationService localizationService;
     private final String bundleName;
 
-    public BundleServiceImpl(LocalizationServiceImpl localization,
+    public BundleServiceImpl(LocalizationService localization,
                              @Value("${bundle.name}") String bundleName) {
         this.localizationService = localization;
         this.bundleName = bundleName;

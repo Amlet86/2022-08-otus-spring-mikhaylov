@@ -44,7 +44,7 @@ public class QuestionServiceImplTest {
         given(questionDao.findQuestions())
                 .willReturn(Collections.singletonList(new Question()));
         questionService.getQuestions()
-                .forEach(question -> assertEquals(question.getClass(), Question.class));
+                .forEach(question -> assertEquals(Question.class, question.getClass()));
     }
 
 }
