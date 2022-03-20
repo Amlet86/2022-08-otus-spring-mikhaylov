@@ -1,46 +1,33 @@
 package ru.amlet.dao;
 
 import com.opencsv.bean.CsvToBeanBuilder;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Repository;
 import ru.amlet.dto.QuestionDto;
 import ru.amlet.entity.Question;
 import ru.amlet.exception.CsvReadException;
-import ru.amlet.service.LocalizationService;
+import ru.amlet.utility.FileNameProvider;
 import ru.amlet.utility.QuestionConverter;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
-@Getter
-@Setter
 @Repository
-@ConfigurationProperties(prefix = "file")
 public class QuestionDaoCsv implements QuestionDao {
 
-    private final LocalizationService localizationService;
     private final QuestionConverter questionConverter;
-    private final HashMap<String, String> name;
+    private final FileNameProvider fileNameProvider;
 
-    public QuestionDaoCsv(LocalizationService localizationService,
-                          QuestionConverter questionConverter,
-                          HashMap<String, String> name) {
-        this.localizationService = localizationService;
+    public QuestionDaoCsv(QuestionConverter questionConverter,
+                          FileNameProvider fileNameProvider) {
         this.questionConverter = questionConverter;
-        this.name = name;
+        this.fileNameProvider = fileNameProvider;
     }
 
     @Override
     public List<Question> findQuestions() {
-        Locale locale = localizationService.getLocale();
-        String fileName = name.get(locale.toLanguageTag());
+        String fileName = fileNameProvider.getQuestionsFileName();
 
         List<QuestionDto> questionsDto;
         try (InputStream inputStream = QuestionDaoCsv.class.getClassLoader().getResourceAsStream(fileName);

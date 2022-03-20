@@ -11,6 +11,7 @@ import ru.amlet.dao.QuestionDaoCsv;
 import ru.amlet.entity.Question;
 import ru.amlet.exception.CsvReadException;
 import ru.amlet.service.LocalizationService;
+import ru.amlet.utility.FileNameProvider;
 import ru.amlet.utility.QuestionConverter;
 
 import java.util.HashMap;
@@ -23,67 +24,64 @@ import static org.mockito.BDDMockito.given;
 @DisplayName("Имплементация класса QuestionDao")
 public class QuestionDaoCsvTest {
 
-    @Mock
-    private LocalizationService localizationService;
     @Autowired
     QuestionConverter questionConverter;
+    @Mock
+    private FileNameProvider fileNameProvider;
 
     QuestionDaoCsv questionDao;
 
     @BeforeEach
     void setUp() {
         questionConverter = new QuestionConverter();
-        HashMap<String, String> name = new HashMap<>();
-        name.put("en", "qa_en.csv");
-        name.put("ru", "qa_ru.csv");
-        questionDao = new QuestionDaoCsv(localizationService, questionConverter, name);
+        questionDao = new QuestionDaoCsv(questionConverter, fileNameProvider);
     }
 
     @Test
     @DisplayName("метод findQuestions, прочитав qa_en.csv, возвращает не пустой список")
     void findEnQuestionsShouldReturnIsNotEmptyList() {
-        given(localizationService.getLocale())
-                .willReturn(Locale.ENGLISH);
+        given(fileNameProvider.getQuestionsFileName())
+                .willReturn("qa_en.csv");
         assertFalse(questionDao.findQuestions().isEmpty());
     }
 
     @Test
     @DisplayName("метод findQuestions, прочитав qa_ru.csv, возвращает не пустой список")
     void findRuQuestionsShouldReturnIsNotEmptyList() {
-        given(localizationService.getLocale())
-                .willReturn(new Locale("ru"));
+        given(fileNameProvider.getQuestionsFileName())
+                .willReturn("qa_ru.csv");
         assertFalse(questionDao.findQuestions().isEmpty());
     }
 
     @Test
     @DisplayName("метод findQuestions, прочитав qa_en.csv, возвращает список из 5 объектов")
     void findEnQuestionsShouldReturnListWithSixElements() {
-        given(localizationService.getLocale())
-                .willReturn(Locale.ENGLISH);
+        given(fileNameProvider.getQuestionsFileName())
+                .willReturn("qa_en.csv");
         assertEquals(5, questionDao.findQuestions().size());
     }
 
     @Test
     @DisplayName("метод findQuestions, прочитав qa_ru.csv, возвращает список из 5 объектов")
     void findRuQuestionsShouldReturnListWithSixElements() {
-        given(localizationService.getLocale())
-                .willReturn(new Locale("ru"));
+        given(fileNameProvider.getQuestionsFileName())
+                .willReturn("qa_ru.csv");
         assertEquals(5, questionDao.findQuestions().size());
     }
 
     @Test
     @DisplayName("метод findQuestions, CsvReadException, если csv не прочитан")
     void findFrQuestionsShouldThrowCsvReadException() {
-        given(localizationService.getLocale())
-                .willReturn(Locale.FRANCE);
+        given(fileNameProvider.getQuestionsFileName())
+                .willReturn("qa_fr.csv");
         assertThrows(CsvReadException.class, questionDao::findQuestions);
     }
 
     @Test
     @DisplayName("метод findQuestions, прочитав csv, возвращает список из объектов класса Question")
     void findQuestionsShouldReturnOnlyQuestionClasses() {
-        given(localizationService.getLocale())
-                .willReturn(new Locale("ru"));
+        given(fileNameProvider.getQuestionsFileName())
+                .willReturn("qa_ru.csv");
         questionDao.findQuestions()
                 .forEach(question -> assertEquals(Question.class, question.getClass()));
     }
