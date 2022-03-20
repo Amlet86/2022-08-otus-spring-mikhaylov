@@ -1,11 +1,11 @@
 package ru.amlet.service;
 
 import ru.amlet.entity.Question;
-import ru.amlet.entity.Quiz;
+import ru.amlet.entity.QuizState;
 
 public interface MessageConstructorService {
 
     String createAnswerMessage(Question question);
 
-    String createResultMessage(Quiz quiz);
+    String createResultMessage(QuizState quizState);
 }

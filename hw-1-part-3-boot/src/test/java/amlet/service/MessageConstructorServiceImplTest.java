@@ -1,19 +1,15 @@
 package amlet.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.amlet.entity.Answer;
 import ru.amlet.entity.Player;
 import ru.amlet.entity.Question;
-import ru.amlet.entity.Quiz;
-import ru.amlet.service.LeadingScoreServiceImpl;
+import ru.amlet.entity.QuizState;
 import ru.amlet.service.MessageConstructorService;
 import ru.amlet.service.MessageConstructorServiceImpl;
-import ru.amlet.utility.CorrectAnswer;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -39,10 +35,10 @@ public class MessageConstructorServiceImplTest {
     void createResultMessageShouldReturnExpectedWinMessage() {
         Player player = new Player("Amlet");
         int lowestPassingScore = 3;
-        Quiz quiz = new Quiz(player, lowestPassingScore);
-        quiz.setScore(4);
+        QuizState quizState = new QuizState(player, lowestPassingScore);
+        quizState.setScore(4);
         String expectedMessage = "Dear Amlet your result: 4 it's a good result. Congratulation!";
-        assertEquals(expectedMessage, messageConstructorService.createResultMessage(quiz));
+        assertEquals(expectedMessage, messageConstructorService.createResultMessage(quizState));
     }
 
     @Test
@@ -50,10 +46,10 @@ public class MessageConstructorServiceImplTest {
     void createResultMessageShouldReturnExpectedLoseMessage() {
         Player player = new Player("Amlet");
         int lowestPassingScore = 3;
-        Quiz quiz = new Quiz(player, lowestPassingScore);
-        quiz.setScore(2);
+        QuizState quizState = new QuizState(player, lowestPassingScore);
+        quizState.setScore(2);
         String expectedMessage = "Dear Amlet your result: 2 it's a terrible result. Try again.";
-        assertEquals(expectedMessage, messageConstructorService.createResultMessage(quiz));
+        assertEquals(expectedMessage, messageConstructorService.createResultMessage(quizState));
     }
 
 }

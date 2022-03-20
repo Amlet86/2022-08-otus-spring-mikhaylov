@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.amlet.entity.Answer;
 import ru.amlet.entity.Player;
 import ru.amlet.entity.Question;
-import ru.amlet.entity.Quiz;
+import ru.amlet.entity.QuizState;
 
 import java.util.List;
 import java.util.Objects;
@@ -37,15 +37,15 @@ public class QuizServiceImpl implements QuizService {
     @Override
     public void conducting() {
         Player player = greetingService.greetingAndAcquaintance();
-        Quiz quiz = new Quiz(player, lowestPassingScore);
+        QuizState quizState = new QuizState(player, lowestPassingScore);
 
         List<Question> questions = questionService.getQuestions();
         for (Question question : questions) {
             askQuestion(question);
             Answer playersAnswer = new Answer(getAnswer());
-            quiz.incrementScore(leadingScoreService.countScore(question, playersAnswer));
+            quizState.incrementScore(leadingScoreService.countScore(question, playersAnswer));
         }
-        outputResult(quiz);
+        outputResult(quizState);
     }
 
     @Override
@@ -64,8 +64,8 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public void outputResult(Quiz quiz) {
-        String resultText = messageConstructorService.createResultMessage(quiz);
+    public void outputResult(QuizState quizState) {
+        String resultText = messageConstructorService.createResultMessage(quizState);
         ioService.writeString(resultText);
     }
 
