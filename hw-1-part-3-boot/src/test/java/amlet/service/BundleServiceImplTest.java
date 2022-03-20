@@ -26,7 +26,7 @@ public class BundleServiceImplTest {
 
     BundleServiceImpl bundleService;
 
-    private final String bundleKey = "greeting.acquaintance";
+    private final String bundleGreeting = "greeting.acquaintance";
 
     @BeforeEach
     void setUp() {
@@ -59,20 +59,20 @@ public class BundleServiceImplTest {
     }
 
     @Test
-    @DisplayName("ResourceBundle Locale.En должен содержать bundleKey=greeting.acquaintance")
-    void resourceEnBundleShouldContainsBundleKey() {
+    @DisplayName("ResourceBundle Locale.En должен содержать bundleGreeting=greeting.acquaintance")
+    void resourceEnBundleShouldContainsBundleGreeting() {
         given(localizationService.getLocale())
                 .willReturn(Locale.ENGLISH);
         ResourceBundle resourceBundle = bundleService.getLocaleBundle();
-        assertNotNull(resourceBundle.getObject(bundleKey));
+        assertNotNull(resourceBundle.getObject(bundleGreeting));
     }
 
     @Test
-    @DisplayName("ResourceBundle Locale.Ru должен содержать bundleKey=greeting.acquaintance")
-    void resourceRuBundleShouldContainsBundleKey() {
+    @DisplayName("ResourceBundle Locale.Ru должен содержать bundleGreeting=greeting.acquaintance")
+    void resourceRuBundleShouldContainsBundleGreeting() {
         given(localizationService.getLocale())
                 .willReturn(new Locale("ru"));
         ResourceBundle resourceBundle = bundleService.getLocaleBundle();
-        assertNotNull(resourceBundle.getObject(bundleKey));
+        assertNotNull(resourceBundle.getObject(bundleGreeting));
     }
 }

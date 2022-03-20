@@ -21,4 +21,10 @@ public class BundleServiceImpl implements BundleService {
     public ResourceBundle getLocaleBundle() {
         return ResourceBundle.getBundle(bundleName, localizationService.getLocale());
     }
+
+    @Override
+    public String getBundleObject(String objectName) {
+        ResourceBundle resourceBundle = getLocaleBundle();
+        return (String) resourceBundle.getObject(objectName);
+    }
 }

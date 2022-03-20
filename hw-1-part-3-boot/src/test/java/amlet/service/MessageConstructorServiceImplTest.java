@@ -1,22 +1,38 @@
 package amlet.service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import ru.amlet.entity.Answer;
 import ru.amlet.entity.Player;
 import ru.amlet.entity.Question;
 import ru.amlet.entity.QuizState;
+import ru.amlet.service.BundleServiceImpl;
 import ru.amlet.service.MessageConstructorService;
 import ru.amlet.service.MessageConstructorServiceImpl;
 
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.BDDMockito.given;
 
+@ExtendWith(MockitoExtension.class)
 @DisplayName("Имплементация класса MessageConstructorService")
 public class MessageConstructorServiceImplTest {
 
-    MessageConstructorService messageConstructorService = new MessageConstructorServiceImpl();
+    @Mock
+    BundleServiceImpl bundleService;
+    String bundleWin = "result.win";
+    String bundleLose = "result.lose";
+    MessageConstructorService messageConstructorService;
+
+    @BeforeEach
+    void setUp() {
+        messageConstructorService = new MessageConstructorServiceImpl(bundleService, bundleWin, bundleLose);
+    }
 
     @Test
     @DisplayName("метод createAnswerMessage возвращает конкатенированные ответы")
@@ -31,24 +47,54 @@ public class MessageConstructorServiceImplTest {
     }
 
     @Test
-    @DisplayName("метод createResultMessage возвращает определенное сообщение позитивного результата")
-    void createResultMessageShouldReturnExpectedWinMessage() {
+    @DisplayName("метод createResultMessage возвращает определенное en сообщение позитивного результата")
+    void createResultMessageShouldReturnEnExpectedWinMessage() {
+        given(bundleService.getBundleObject(bundleWin))
+                .willReturn("Dear %s your result %s it's a good result. Congratulation!");
         Player player = new Player("Amlet");
         int lowestPassingScore = 3;
         QuizState quizState = new QuizState(player, lowestPassingScore);
         quizState.setScore(4);
-        String expectedMessage = "Dear Amlet your result: 4 it's a good result. Congratulation!";
+        String expectedMessage = "Dear Amlet your result 4 it's a good result. Congratulation!";
         assertEquals(expectedMessage, messageConstructorService.createResultMessage(quizState));
     }
 
     @Test
-    @DisplayName("метод createResultMessage возвращает определенное сообщение негативного результата")
-    void createResultMessageShouldReturnExpectedLoseMessage() {
+    @DisplayName("метод createResultMessage возвращает определенное en сообщение негативного результата")
+    void createResultMessageShouldReturnEnExpectedLoseMessage() {
+        given(bundleService.getBundleObject(bundleLose))
+                .willReturn("Dear %s your result %s it's a terrible result. Try again.");
         Player player = new Player("Amlet");
         int lowestPassingScore = 3;
         QuizState quizState = new QuizState(player, lowestPassingScore);
         quizState.setScore(2);
-        String expectedMessage = "Dear Amlet your result: 2 it's a terrible result. Try again.";
+        String expectedMessage = "Dear Amlet your result 2 it's a terrible result. Try again.";
+        assertEquals(expectedMessage, messageConstructorService.createResultMessage(quizState));
+    }
+
+    @Test
+    @DisplayName("метод createResultMessage возвращает определенное ru сообщение позитивного результата")
+    void createResultMessageShouldReturnRuExpectedWinMessage() {
+        given(bundleService.getBundleObject(bundleWin))
+                .willReturn("Дорогой %s твой счёт %s это хороший результат. Поздравляю!");
+        Player player = new Player("Андрей");
+        int lowestPassingScore = 3;
+        QuizState quizState = new QuizState(player, lowestPassingScore);
+        quizState.setScore(4);
+        String expectedMessage = "Дорогой Андрей твой счёт 4 это хороший результат. Поздравляю!";
+        assertEquals(expectedMessage, messageConstructorService.createResultMessage(quizState));
+    }
+
+    @Test
+    @DisplayName("метод createResultMessage возвращает определенное ru сообщение негативного результата")
+    void createResultMessageShouldReturnRuExpectedLoseMessage() {
+        given(bundleService.getBundleObject(bundleLose))
+                .willReturn("Дорогой %s твой счёт %s это ужасный результат. Попробуй снова.");
+        Player player = new Player("Андрей");
+        int lowestPassingScore = 3;
+        QuizState quizState = new QuizState(player, lowestPassingScore);
+        quizState.setScore(2);
+        String expectedMessage = "Дорогой Андрей твой счёт 2 это ужасный результат. Попробуй снова.";
         assertEquals(expectedMessage, messageConstructorService.createResultMessage(quizState));
     }
 

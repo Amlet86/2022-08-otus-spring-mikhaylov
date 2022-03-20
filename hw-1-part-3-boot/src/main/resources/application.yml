@@ -5,7 +5,10 @@ file:
 
 bundle:
   name: messages
-  key: greeting.acquaintance
+  greeting: greeting.acquaintance
+  result:
+    win: result.win
+    lose: result.lose
 
 lowest:
   passing:

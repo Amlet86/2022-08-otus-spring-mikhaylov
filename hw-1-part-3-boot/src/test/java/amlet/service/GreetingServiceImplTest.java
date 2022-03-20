@@ -33,15 +33,15 @@ public class GreetingServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        String bundleKey = "greeting.acquaintance";
-        greetingService = new GreetingServiceImpl(bundleService, ioService, bundleKey);
+        String bundleGreeting = "greeting.acquaintance";
+        greetingService = new GreetingServiceImpl(bundleService, ioService, bundleGreeting);
     }
 
     @Test
     @DisplayName("метод greetingAndAcquaintance возвращает не null")
     void greetingAndAcquaintanceShouldReturnNotNullObject() {
-        given(bundleService.getLocaleBundle())
-                .willReturn(ResourceBundle.getBundle("messages", Locale.ENGLISH));
+        given(bundleService.getBundleObject("greeting.acquaintance"))
+                .willReturn("what is your name?");
         given(ioService.readString())
                 .willReturn("Amlet");
         assertNotNull(greetingService.greetingAndAcquaintance());
@@ -50,8 +50,8 @@ public class GreetingServiceImplTest {
     @Test
     @DisplayName("метод greetingAndAcquaintance возвращает объект класса Player")
     void greetingAndAcquaintanceShouldReturnPlayerClass() {
-        given(bundleService.getLocaleBundle())
-                .willReturn(ResourceBundle.getBundle("messages", Locale.ENGLISH));
+        given(bundleService.getBundleObject("greeting.acquaintance"))
+                .willReturn("what is your name?");
         given(ioService.readString())
                 .willReturn("Amlet");
         assertEquals(Player.class, greetingService.greetingAndAcquaintance().getClass());
@@ -60,8 +60,8 @@ public class GreetingServiceImplTest {
     @Test
     @DisplayName("метод greetingAndAcquaintance возвращает Player с именем")
     void greetingAndAcquaintanceShouldReturnPlayerWithName() {
-        given(bundleService.getLocaleBundle())
-                .willReturn(ResourceBundle.getBundle("messages", Locale.ENGLISH));
+        given(bundleService.getBundleObject("greeting.acquaintance"))
+                .willReturn("what is your name?");
         given(ioService.readString())
                 .willReturn("Amlet");
         Player player = greetingService.greetingAndAcquaintance();
