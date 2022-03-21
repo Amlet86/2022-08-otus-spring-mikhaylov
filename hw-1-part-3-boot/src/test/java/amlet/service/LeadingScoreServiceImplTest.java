@@ -3,31 +3,21 @@ package amlet.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import ru.amlet.entity.Answer;
-import ru.amlet.entity.Player;
 import ru.amlet.entity.Question;
-import ru.amlet.service.BundleServiceImpl;
-import ru.amlet.service.GreetingServiceImpl;
-import ru.amlet.service.IOService;
+import ru.amlet.service.LeadingScoreService;
 import ru.amlet.service.LeadingScoreServiceImpl;
 import ru.amlet.utility.CorrectAnswer;
 
 import java.util.Collections;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.BDDMockito.given;
 
 @DisplayName("Имплементация класса LeadingScoreService")
 public class LeadingScoreServiceImplTest {
 
-    private final LeadingScoreServiceImpl leadingScoreService = new LeadingScoreServiceImpl();
+    private final LeadingScoreService leadingScoreService = new LeadingScoreServiceImpl();
     private Answer answer;
     private Question question;
 

@@ -10,14 +10,14 @@ import ru.amlet.entity.QuizState;
 @Service
 public class MessageConstructorServiceImpl implements MessageConstructorService {
 
-    private final BundleService bundleService;
+    private final LocalizationService localizationService;
     private final String bundleWin;
     private final String bundleLose;
 
-    public MessageConstructorServiceImpl(BundleService bundleService,
+    public MessageConstructorServiceImpl(LocalizationService localizationService,
                                          @Value("${bundle.result.win}") String bundleWin,
                                          @Value("${bundle.result.lose}") String bundleLose) {
-        this.bundleService = bundleService;
+        this.localizationService = localizationService;
         this.bundleWin = bundleWin;
         this.bundleLose = bundleLose;
     }
@@ -38,10 +38,10 @@ public class MessageConstructorServiceImpl implements MessageConstructorService 
         Player player = quizState.getPlayer();
         String resultMessage;
         if (quizState.isWin()) {
-            String bundleMessage = bundleService.getBundleObject(bundleWin);
+            String bundleMessage = localizationService.getLocalizedMessage(bundleWin);
             resultMessage = String.format(bundleMessage, player.getName(), quizState.getScore());
         } else {
-            String bundleMessage = bundleService.getBundleObject(bundleLose);
+            String bundleMessage = localizationService.getLocalizedMessage(bundleLose);
             resultMessage = String.format(bundleMessage, player.getName(), quizState.getScore());
         }
         return resultMessage;

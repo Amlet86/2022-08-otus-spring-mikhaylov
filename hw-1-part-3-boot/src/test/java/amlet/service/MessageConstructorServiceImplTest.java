@@ -10,7 +10,7 @@ import ru.amlet.entity.Answer;
 import ru.amlet.entity.Player;
 import ru.amlet.entity.Question;
 import ru.amlet.entity.QuizState;
-import ru.amlet.service.BundleServiceImpl;
+import ru.amlet.service.LocalizationService;
 import ru.amlet.service.MessageConstructorService;
 import ru.amlet.service.MessageConstructorServiceImpl;
 
@@ -24,14 +24,14 @@ import static org.mockito.BDDMockito.given;
 public class MessageConstructorServiceImplTest {
 
     @Mock
-    private BundleServiceImpl bundleService;
+    private LocalizationService localizationService;
     private final String bundleWin = "result.win";
     private final String bundleLose = "result.lose";
     private MessageConstructorService messageConstructorService;
 
     @BeforeEach
     void setUp() {
-        messageConstructorService = new MessageConstructorServiceImpl(bundleService, bundleWin, bundleLose);
+        messageConstructorService = new MessageConstructorServiceImpl(localizationService, bundleWin, bundleLose);
     }
 
     @Test
@@ -49,7 +49,7 @@ public class MessageConstructorServiceImplTest {
     @Test
     @DisplayName("метод createResultMessage возвращает определенное en сообщение позитивного результата")
     void createResultMessageShouldReturnEnExpectedWinMessage() {
-        given(bundleService.getBundleObject(bundleWin))
+        given(localizationService.getLocalizedMessage(bundleWin))
                 .willReturn("Dear %s your result %s it's a good result. Congratulation!");
         Player player = new Player("Amlet");
         int lowestPassingScore = 3;
@@ -62,7 +62,7 @@ public class MessageConstructorServiceImplTest {
     @Test
     @DisplayName("метод createResultMessage возвращает определенное en сообщение негативного результата")
     void createResultMessageShouldReturnEnExpectedLoseMessage() {
-        given(bundleService.getBundleObject(bundleLose))
+        given(localizationService.getLocalizedMessage(bundleLose))
                 .willReturn("Dear %s your result %s it's a terrible result. Try again.");
         Player player = new Player("Amlet");
         int lowestPassingScore = 3;
@@ -75,7 +75,7 @@ public class MessageConstructorServiceImplTest {
     @Test
     @DisplayName("метод createResultMessage возвращает определенное ru сообщение позитивного результата")
     void createResultMessageShouldReturnRuExpectedWinMessage() {
-        given(bundleService.getBundleObject(bundleWin))
+        given(localizationService.getLocalizedMessage(bundleWin))
                 .willReturn("Дорогой %s твой счёт %s это хороший результат. Поздравляю!");
         Player player = new Player("Андрей");
         int lowestPassingScore = 3;
@@ -88,7 +88,7 @@ public class MessageConstructorServiceImplTest {
     @Test
     @DisplayName("метод createResultMessage возвращает определенное ru сообщение негативного результата")
     void createResultMessageShouldReturnRuExpectedLoseMessage() {
-        given(bundleService.getBundleObject(bundleLose))
+        given(localizationService.getLocalizedMessage(bundleLose))
                 .willReturn("Дорогой %s твой счёт %s это ужасный результат. Попробуй снова.");
         Player player = new Player("Андрей");
         int lowestPassingScore = 3;

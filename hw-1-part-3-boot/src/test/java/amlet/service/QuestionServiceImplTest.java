@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.amlet.dao.QuestionDao;
 import ru.amlet.entity.Question;
+import ru.amlet.service.QuestionService;
 import ru.amlet.service.QuestionServiceImpl;
 
 import java.util.Collections;
@@ -23,7 +24,7 @@ public class QuestionServiceImplTest {
     @Mock
     private QuestionDao questionDao;
 
-    private QuestionServiceImpl questionService;
+    private QuestionService questionService;
 
     @BeforeEach
     void setUp() {

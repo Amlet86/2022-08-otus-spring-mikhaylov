@@ -7,9 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.amlet.entity.Player;
-import ru.amlet.service.BundleServiceImpl;
-import ru.amlet.service.GreetingServiceImpl;
-import ru.amlet.service.IOService;
+import ru.amlet.service.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -20,11 +18,11 @@ import static org.mockito.BDDMockito.given;
 public class GreetingServiceImplTest {
 
     @Mock
-    private BundleServiceImpl bundleService;
+    private LocalizationService bundleService;
     @Mock
     private IOService ioService;
 
-    private GreetingServiceImpl greetingService;
+    private GreetingService greetingService;
 
     @BeforeEach
     void setUp() {
@@ -35,7 +33,7 @@ public class GreetingServiceImplTest {
     @Test
     @DisplayName("метод greetingAndAcquaintance возвращает не null")
     void greetingAndAcquaintanceShouldReturnNotNullObject() {
-        given(bundleService.getBundleObject("greeting.acquaintance"))
+        given(bundleService.getLocalizedMessage("greeting.acquaintance"))
                 .willReturn("what is your name?");
         given(ioService.readString())
                 .willReturn("Amlet");
@@ -45,7 +43,7 @@ public class GreetingServiceImplTest {
     @Test
     @DisplayName("метод greetingAndAcquaintance возвращает объект класса Player")
     void greetingAndAcquaintanceShouldReturnPlayerClass() {
-        given(bundleService.getBundleObject("greeting.acquaintance"))
+        given(bundleService.getLocalizedMessage("greeting.acquaintance"))
                 .willReturn("what is your name?");
         given(ioService.readString())
                 .willReturn("Amlet");
@@ -55,7 +53,7 @@ public class GreetingServiceImplTest {
     @Test
     @DisplayName("метод greetingAndAcquaintance возвращает Player с именем")
     void greetingAndAcquaintanceShouldReturnPlayerWithName() {
-        given(bundleService.getBundleObject("greeting.acquaintance"))
+        given(bundleService.getLocalizedMessage("greeting.acquaintance"))
                 .willReturn("what is your name?");
         given(ioService.readString())
                 .willReturn("Amlet");

@@ -7,21 +7,21 @@ import ru.amlet.entity.Player;
 @Service
 public class GreetingServiceImpl implements GreetingService {
 
-    private final BundleService bundleService;
+    private final LocalizationService localizationService;
     private final IOService ioService;
     private final String bundleGreeting;
 
-    public GreetingServiceImpl(BundleService bundleService,
+    public GreetingServiceImpl(LocalizationService localizationService,
                                IOService ioService,
                                @Value("${bundle.greeting}") String bundleGreeting) {
-        this.bundleService = bundleService;
+        this.localizationService = localizationService;
         this.ioService = ioService;
         this.bundleGreeting = bundleGreeting;
     }
 
     @Override
     public Player greetingAndAcquaintance() {
-        String greetingAndAcquaintance = bundleService.getBundleObject(bundleGreeting);
+        String greetingAndAcquaintance = localizationService.getLocalizedMessage(bundleGreeting);
         ioService.writeString(greetingAndAcquaintance);
         String name = ioService.readString();
         return new Player(name);
