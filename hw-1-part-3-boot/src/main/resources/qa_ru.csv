@@ -1,0 +1,6 @@
+number,question,first answer,is first correct,second answer,is second correct,third answer,is third correct
+1,какой город столица Британии?,Лондон,true,Дерби,false,Уэльс,false
+2,какая река самая длинная?,Амазонка,false,Нил,true,Янцзы,false
+3,какой континент самый большой?,Африка,false,Антарктика,false,Евразия,true
+4,какая гора самая высокая?,Эверест,true,К2,false,Канченджанга,false
+5,кто следующий президент РФ?,,,,,,
