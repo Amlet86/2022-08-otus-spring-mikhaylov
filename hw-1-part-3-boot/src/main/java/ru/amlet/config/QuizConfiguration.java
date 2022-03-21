@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ru.amlet.service.IOService;
 import ru.amlet.service.IOServiceImpl;
-import ru.amlet.service.LocalizationService;
-import ru.amlet.service.LocalizationServiceImpl;
+import ru.amlet.utility.LocaleProvider;
+import ru.amlet.utility.LocaleProviderImpl;
 import ru.amlet.utility.FileNameProvider;
 import ru.amlet.utility.FileNameProviderImpl;
 
@@ -33,8 +33,8 @@ public class QuizConfiguration {
     }
 
     @Bean
-    public LocalizationService localizationService() {
-        return new LocalizationServiceImpl(new Locale(locale));
+    public LocaleProvider localizationService() {
+        return new LocaleProviderImpl(new Locale(locale));
     }
 
     @Bean

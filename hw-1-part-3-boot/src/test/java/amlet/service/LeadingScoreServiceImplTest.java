@@ -27,9 +27,9 @@ import static org.mockito.BDDMockito.given;
 @DisplayName("Имплементация класса LeadingScoreService")
 public class LeadingScoreServiceImplTest {
 
-    LeadingScoreServiceImpl leadingScoreService = new LeadingScoreServiceImpl();
-    Answer answer;
-    Question question;
+    private final LeadingScoreServiceImpl leadingScoreService = new LeadingScoreServiceImpl();
+    private Answer answer;
+    private Question question;
 
     @BeforeEach
     void setUp() {

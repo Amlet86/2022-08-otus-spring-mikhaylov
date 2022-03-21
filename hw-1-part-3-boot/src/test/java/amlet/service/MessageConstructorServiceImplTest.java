@@ -24,10 +24,10 @@ import static org.mockito.BDDMockito.given;
 public class MessageConstructorServiceImplTest {
 
     @Mock
-    BundleServiceImpl bundleService;
-    String bundleWin = "result.win";
-    String bundleLose = "result.lose";
-    MessageConstructorService messageConstructorService;
+    private BundleServiceImpl bundleService;
+    private final String bundleWin = "result.win";
+    private final String bundleLose = "result.lose";
+    private MessageConstructorService messageConstructorService;
 
     @BeforeEach
     void setUp() {

@@ -1,24 +1,22 @@
 package ru.amlet.utility;
 
-import ru.amlet.service.LocalizationService;
-
 import java.util.HashMap;
 import java.util.Locale;
 
 public class FileNameProviderImpl implements FileNameProvider {
 
-    private final LocalizationService localizationService;
+    private final LocaleProvider localeProvider;
     private final HashMap<String, String> name;
 
-    public FileNameProviderImpl(LocalizationService localizationService,
+    public FileNameProviderImpl(LocaleProvider localeProvider,
                                 HashMap<String, String> name) {
-        this.localizationService = localizationService;
+        this.localeProvider = localeProvider;
         this.name = name;
     }
 
     @Override
     public String getQuestionsFileName() {
-        Locale locale = localizationService.getLocale();
+        Locale locale = localeProvider.getLocale();
         return name.get(locale.toLanguageTag());
     }
 }

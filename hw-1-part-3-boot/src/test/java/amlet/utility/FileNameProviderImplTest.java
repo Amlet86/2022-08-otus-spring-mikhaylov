@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.amlet.service.LocalizationService;
+import ru.amlet.utility.LocaleProvider;
 import ru.amlet.utility.FileNameProvider;
 import ru.amlet.utility.FileNameProviderImpl;
 
@@ -22,22 +22,22 @@ import static org.mockito.BDDMockito.given;
 public class FileNameProviderImplTest {
 
     @Mock
-    private LocalizationService localizationService;
+    private LocaleProvider localeProvider;
 
-    FileNameProvider fileNameProvider;
+    private FileNameProvider fileNameProvider;
 
     @BeforeEach
     void setUp() {
         HashMap<String, String> name = new HashMap<>();
         name.put("en", "qa_en.csv");
         name.put("ru", "qa_ru.csv");
-        fileNameProvider = new FileNameProviderImpl(localizationService, name);
+        fileNameProvider = new FileNameProviderImpl(localeProvider, name);
     }
 
     @Test
     @DisplayName("метод getQuestionsFileName возвращает не null для en Locale")
     void getQuestionsFileNameEnShouldReturnNotNull() {
-        given(localizationService.getLocale())
+        given(localeProvider.getLocale())
                 .willReturn(Locale.ENGLISH);
         assertNotNull(fileNameProvider.getQuestionsFileName());
     }
@@ -45,7 +45,7 @@ public class FileNameProviderImplTest {
     @Test
     @DisplayName("метод getQuestionsFileName возвращает не null для ru Locale")
     void getQuestionsFileNameRuShouldReturnNotNull() {
-        given(localizationService.getLocale())
+        given(localeProvider.getLocale())
                 .willReturn(new Locale("ru"));
         assertNotNull(fileNameProvider.getQuestionsFileName());
     }
@@ -53,7 +53,7 @@ public class FileNameProviderImplTest {
     @Test
     @DisplayName("метод getQuestionsFileName возвращает объект String для en Locale")
     void getQuestionsFileNameEnShouldReturnStringClass() {
-        given(localizationService.getLocale())
+        given(localeProvider.getLocale())
                 .willReturn(Locale.ENGLISH);
         assertEquals(String.class, fileNameProvider.getQuestionsFileName().getClass());
     }
@@ -61,7 +61,7 @@ public class FileNameProviderImplTest {
     @Test
     @DisplayName("метод getQuestionsFileName возвращает объект String для ru Locale")
     void getQuestionsFileNameRuShouldReturnStringClass() {
-        given(localizationService.getLocale())
+        given(localeProvider.getLocale())
                 .willReturn(new Locale("ru"));
         assertEquals(String.class, fileNameProvider.getQuestionsFileName().getClass());
     }

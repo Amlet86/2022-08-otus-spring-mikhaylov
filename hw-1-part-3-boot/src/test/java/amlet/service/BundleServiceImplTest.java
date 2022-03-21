@@ -7,7 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.amlet.service.BundleServiceImpl;
-import ru.amlet.service.LocalizationService;
+import ru.amlet.utility.LocaleProvider;
 
 import java.util.Locale;
 import java.util.PropertyResourceBundle;
@@ -22,22 +22,22 @@ import static org.mockito.BDDMockito.given;
 public class BundleServiceImplTest {
 
     @Mock
-    private LocalizationService localizationService;
+    private LocaleProvider localeProvider;
 
-    BundleServiceImpl bundleService;
+    private BundleServiceImpl bundleService;
 
     private final String bundleGreeting = "greeting.acquaintance";
 
     @BeforeEach
     void setUp() {
         String bundleName = "messages";
-        bundleService = new BundleServiceImpl(localizationService, bundleName);
+        bundleService = new BundleServiceImpl(localeProvider, bundleName);
     }
 
     @Test
     @DisplayName("метод getLocaleBundle, для en Locale, находит bundle")
     void getLocaleEnBundleShouldReturnNotNullObject() {
-        given(localizationService.getLocale())
+        given(localeProvider.getLocale())
                 .willReturn(Locale.ENGLISH);
         assertNotNull(bundleService.getLocaleBundle());
     }
@@ -45,7 +45,7 @@ public class BundleServiceImplTest {
     @Test
     @DisplayName("метод getLocaleBundle, для ru Locale, находит bundle")
     void getLocaleRuBundleShouldReturnNotNullObject() {
-        given(localizationService.getLocale())
+        given(localeProvider.getLocale())
                 .willReturn(new Locale("ru"));
         assertNotNull(bundleService.getLocaleBundle());
     }
@@ -53,7 +53,7 @@ public class BundleServiceImplTest {
     @Test
     @DisplayName("метод getLocaleBundle возвращает PropertyResourceBundle")
     void getLocaleEnBundleShouldReturnResourceBundle() {
-        given(localizationService.getLocale())
+        given(localeProvider.getLocale())
                 .willReturn(Locale.ENGLISH);
         assertEquals(PropertyResourceBundle.class, bundleService.getLocaleBundle().getClass());
     }
@@ -61,7 +61,7 @@ public class BundleServiceImplTest {
     @Test
     @DisplayName("ResourceBundle Locale.En должен содержать bundleGreeting=greeting.acquaintance")
     void resourceEnBundleShouldContainsBundleGreeting() {
-        given(localizationService.getLocale())
+        given(localeProvider.getLocale())
                 .willReturn(Locale.ENGLISH);
         ResourceBundle resourceBundle = bundleService.getLocaleBundle();
         assertNotNull(resourceBundle.getObject(bundleGreeting));
@@ -70,7 +70,7 @@ public class BundleServiceImplTest {
     @Test
     @DisplayName("ResourceBundle Locale.Ru должен содержать bundleGreeting=greeting.acquaintance")
     void resourceRuBundleShouldContainsBundleGreeting() {
-        given(localizationService.getLocale())
+        given(localeProvider.getLocale())
                 .willReturn(new Locale("ru"));
         ResourceBundle resourceBundle = bundleService.getLocaleBundle();
         assertNotNull(resourceBundle.getObject(bundleGreeting));

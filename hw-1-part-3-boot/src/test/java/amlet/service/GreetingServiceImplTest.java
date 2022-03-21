@@ -10,11 +10,6 @@ import ru.amlet.entity.Player;
 import ru.amlet.service.BundleServiceImpl;
 import ru.amlet.service.GreetingServiceImpl;
 import ru.amlet.service.IOService;
-import ru.amlet.service.LocalizationService;
-
-import java.util.Locale;
-import java.util.PropertyResourceBundle;
-import java.util.ResourceBundle;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -25,11 +20,11 @@ import static org.mockito.BDDMockito.given;
 public class GreetingServiceImplTest {
 
     @Mock
-    BundleServiceImpl bundleService;
+    private BundleServiceImpl bundleService;
     @Mock
-    IOService ioService;
+    private IOService ioService;
 
-    GreetingServiceImpl greetingService;
+    private GreetingServiceImpl greetingService;
 
     @BeforeEach
     void setUp() {

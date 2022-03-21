@@ -10,12 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ru.amlet.dao.QuestionDaoCsv;
 import ru.amlet.entity.Question;
 import ru.amlet.exception.CsvReadException;
-import ru.amlet.service.LocalizationService;
 import ru.amlet.utility.FileNameProvider;
 import ru.amlet.utility.QuestionConverter;
-
-import java.util.HashMap;
-import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
@@ -25,11 +21,11 @@ import static org.mockito.BDDMockito.given;
 public class QuestionDaoCsvTest {
 
     @Autowired
-    QuestionConverter questionConverter;
+    private QuestionConverter questionConverter;
     @Mock
     private FileNameProvider fileNameProvider;
 
-    QuestionDaoCsv questionDao;
+    private QuestionDaoCsv questionDao;
 
     @BeforeEach
     void setUp() {
