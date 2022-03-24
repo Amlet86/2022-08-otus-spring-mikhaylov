@@ -1,0 +1,21 @@
+spring:
+  main:
+    allow-circular-references: true
+
+file:
+  name:
+    en: qa_en.csv
+    ru: qa_ru.csv
+
+bundle:
+  name: messages
+  greeting: greeting.acquaintance
+  result:
+    win: result.win
+    lose: result.lose
+
+lowest:
+  passing:
+    score: '3'
+
+locale: ru
