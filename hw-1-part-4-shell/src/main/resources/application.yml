@@ -2,6 +2,10 @@ spring:
   main:
     allow-circular-references: true
 
+logging:
+  level:
+    root: off
+
 file:
   name:
     en: qa_en.csv

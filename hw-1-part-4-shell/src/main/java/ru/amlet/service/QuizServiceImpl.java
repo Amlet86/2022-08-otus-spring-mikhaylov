@@ -1,6 +1,8 @@
 package ru.amlet.service;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.shell.standard.ShellComponent;
+import org.springframework.shell.standard.ShellMethod;
 import org.springframework.stereotype.Service;
 import ru.amlet.entity.Answer;
 import ru.amlet.entity.Player;
@@ -11,6 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
+@ShellComponent
 public class QuizServiceImpl implements QuizService {
 
     private final IOService ioService;
@@ -35,6 +38,7 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
+    @ShellMethod(value = "Start quiz", key = {"s", "start"})
     public void conducting() {
         Player player = greetingService.greetingAndAcquaintance();
         QuizState quizState = new QuizState(player, lowestPassingScore);
