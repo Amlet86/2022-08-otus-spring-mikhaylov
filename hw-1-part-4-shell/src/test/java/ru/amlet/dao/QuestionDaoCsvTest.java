@@ -1,36 +1,25 @@
 package ru.amlet.dao;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.amlet.entity.Question;
 import ru.amlet.exception.CsvReadException;
 import ru.amlet.utility.FileNameProvider;
-import ru.amlet.utility.QuestionConverter;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 @DisplayName("Имплементация класса QuestionDao")
 public class QuestionDaoCsvTest {
 
-    @Autowired
-    private QuestionConverter questionConverter;
-    @Mock
+    @MockBean
     private FileNameProvider fileNameProvider;
-
+    @Autowired
     private QuestionDaoCsv questionDao;
-
-    @BeforeEach
-    void setUp() {
-        questionConverter = new QuestionConverter();
-        questionDao = new QuestionDaoCsv(questionConverter, fileNameProvider);
-    }
 
     @Test
     @DisplayName("метод findQuestions, прочитав qa_en.csv, возвращает не пустой список")

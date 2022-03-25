@@ -1,33 +1,26 @@
 package ru.amlet.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.amlet.entity.Player;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.BDDMockito.given;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 @DisplayName("Имплементация класса GreetingService")
 public class GreetingServiceImplTest {
 
-    @Mock
+    @MockBean
     private LocalizationService bundleService;
-    @Mock
+    @MockBean
     private IOService ioService;
-
+    @Autowired
     private GreetingService greetingService;
-
-    @BeforeEach
-    void setUp() {
-        String bundleGreeting = "greeting.acquaintance";
-        greetingService = new GreetingServiceImpl(bundleService, ioService, bundleGreeting);
-    }
 
     @Test
     @DisplayName("метод greetingAndAcquaintance возвращает не null")

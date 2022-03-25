@@ -1,35 +1,25 @@
 package ru.amlet.utility;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.HashMap;
 import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.BDDMockito.given;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 @DisplayName("Имплементация класса FileNameProvider")
 public class FileNameProviderImplTest {
 
-    @Mock
+    @MockBean
     private LocaleProvider localeProvider;
-
+    @Autowired
     private FileNameProvider fileNameProvider;
-
-    @BeforeEach
-    void setUp() {
-        HashMap<String, String> name = new HashMap<>();
-        name.put("en", "qa_en.csv");
-        name.put("ru", "qa_ru.csv");
-        fileNameProvider = new FileNameProviderImpl(localeProvider, name);
-    }
 
     @Test
     @DisplayName("метод getQuestionsFileName возвращает не null для en Locale")

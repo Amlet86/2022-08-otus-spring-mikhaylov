@@ -2,6 +2,8 @@ package ru.amlet.utility;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import ru.amlet.dto.QuestionDto;
 import ru.amlet.entity.Question;
 
@@ -10,10 +12,12 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@SpringBootTest
 @DisplayName("Класс QuestionConverter")
 public class QuestionConverterTest {
 
-    private final QuestionConverter questionConverter = new QuestionConverter();
+    @Autowired
+    private QuestionConverter questionConverter;
 
     @Test
     @DisplayName("метод convertQuestion преобразует объект класса QuestionDto в Question")

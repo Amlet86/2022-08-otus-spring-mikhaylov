@@ -1,11 +1,10 @@
 package ru.amlet.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.amlet.entity.Answer;
 import ru.amlet.entity.Player;
 import ru.amlet.entity.Question;
@@ -16,20 +15,16 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 @DisplayName("Имплементация класса MessageConstructorService")
 public class MessageConstructorServiceImplTest {
 
-    @Mock
+    @MockBean
     private LocalizationService localizationService;
+    @Autowired
+    private MessageConstructorService messageConstructorService;
     private final String bundleWin = "result.win";
     private final String bundleLose = "result.lose";
-    private MessageConstructorService messageConstructorService;
-
-    @BeforeEach
-    void setUp() {
-        messageConstructorService = new MessageConstructorServiceImpl(localizationService, bundleWin, bundleLose);
-    }
 
     @Test
     @DisplayName("метод createAnswerMessage возвращает конкатенированные ответы")

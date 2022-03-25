@@ -1,11 +1,10 @@
 package ru.amlet.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.amlet.dao.QuestionDao;
 import ru.amlet.entity.Question;
 
@@ -15,19 +14,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.BDDMockito.given;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 @DisplayName("Имплементация класса QuestionService")
 public class QuestionServiceImplTest {
 
-    @Mock
+    @MockBean
     private QuestionDao questionDao;
-
+    @Autowired
     private QuestionService questionService;
-
-    @BeforeEach
-    void setUp() {
-        questionService = new QuestionServiceImpl(questionDao);
-    }
 
     @Test
     @DisplayName("метод getQuestions возвращает не пустой список")
