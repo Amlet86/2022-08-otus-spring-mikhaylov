@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import ru.amlet.entity.Answer;
 import ru.amlet.entity.Player;
 import ru.amlet.entity.Question;
@@ -16,7 +15,7 @@ import java.util.Objects;
 
 @Component
 @ShellComponent
-public class QuizControllerImpl {
+public class QuizController {
 
     private final IOService ioService;
     private final GreetingService greetingService;
@@ -25,12 +24,12 @@ public class QuizControllerImpl {
     private final LeadingScoreService leadingScoreService;
     private final int lowestPassingScore;
 
-    public QuizControllerImpl(IOService ioService,
-                              GreetingService greetingService,
-                              QuestionService questionService,
-                              MessageConstructorService messageConstructorService,
-                              LeadingScoreService leadingScoreService,
-                              @Value("${lowest.passing.score}") int lowestPassingScore) {
+    public QuizController(IOService ioService,
+                          GreetingService greetingService,
+                          QuestionService questionService,
+                          MessageConstructorService messageConstructorService,
+                          LeadingScoreService leadingScoreService,
+                          @Value("${lowest.passing.score}") int lowestPassingScore) {
         this.ioService = ioService;
         this.greetingService = greetingService;
         this.questionService = questionService;
