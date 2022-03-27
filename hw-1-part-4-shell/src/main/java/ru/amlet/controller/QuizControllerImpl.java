@@ -1,20 +1,22 @@
-package ru.amlet.service;
+package ru.amlet.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import ru.amlet.entity.Answer;
 import ru.amlet.entity.Player;
 import ru.amlet.entity.Question;
 import ru.amlet.entity.QuizState;
+import ru.amlet.service.*;
 
 import java.util.List;
 import java.util.Objects;
 
-@Service
+@Component
 @ShellComponent
-public class QuizServiceImpl implements QuizService {
+public class QuizControllerImpl {
 
     private final IOService ioService;
     private final GreetingService greetingService;
@@ -23,12 +25,12 @@ public class QuizServiceImpl implements QuizService {
     private final LeadingScoreService leadingScoreService;
     private final int lowestPassingScore;
 
-    public QuizServiceImpl(IOService ioService,
-                           GreetingService greetingService,
-                           QuestionService questionService,
-                           MessageConstructorService messageConstructorService,
-                           LeadingScoreService leadingScoreService,
-                           @Value("${lowest.passing.score}") int lowestPassingScore) {
+    public QuizControllerImpl(IOService ioService,
+                              GreetingService greetingService,
+                              QuestionService questionService,
+                              MessageConstructorService messageConstructorService,
+                              LeadingScoreService leadingScoreService,
+                              @Value("${lowest.passing.score}") int lowestPassingScore) {
         this.ioService = ioService;
         this.greetingService = greetingService;
         this.questionService = questionService;
@@ -37,9 +39,12 @@ public class QuizServiceImpl implements QuizService {
         this.lowestPassingScore = lowestPassingScore;
     }
 
-    @Override
     @ShellMethod(value = "Start quiz", key = {"s", "start"})
-    public void conducting() {
+    public void startQuiz(){
+        conducting();
+    }
+
+    private void conducting() {
         Player player = greetingService.greetingAndAcquaintance();
         QuizState quizState = new QuizState(player, lowestPassingScore);
 
@@ -52,8 +57,7 @@ public class QuizServiceImpl implements QuizService {
         outputResult(quizState);
     }
 
-    @Override
-    public void askQuestion(Question question) {
+    private void askQuestion(Question question) {
         ioService.writeString(question.getQuestion());
         if (Objects.nonNull(question.getAnswers()) &&
                 !question.getAnswers().isEmpty()) {
@@ -62,13 +66,11 @@ public class QuizServiceImpl implements QuizService {
         }
     }
 
-    @Override
-    public String getAnswer() {
+    private String getAnswer() {
         return ioService.readString();
     }
 
-    @Override
-    public void outputResult(QuizState quizState) {
+    private void outputResult(QuizState quizState) {
         String resultText = messageConstructorService.createResultMessage(quizState);
         ioService.writeString(resultText);
     }
