@@ -1,6 +1,7 @@
 package ru.amlet.entity;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
 
 @Data
 @Builder
@@ -8,5 +9,5 @@ public class Genre {
 
     private final long id;
 
-    private final String name;
+    private String name;
 }

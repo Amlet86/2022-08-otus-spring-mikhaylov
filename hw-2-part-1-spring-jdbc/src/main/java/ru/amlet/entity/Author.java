@@ -9,5 +9,5 @@ public class Author {
 
     private final long id;
 
-    private final String name;
+    private String name;
 }

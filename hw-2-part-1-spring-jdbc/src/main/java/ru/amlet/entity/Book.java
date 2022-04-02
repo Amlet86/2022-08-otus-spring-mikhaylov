@@ -6,6 +6,7 @@ import java.util.Objects;
 
 @Data
 @Builder
+@AllArgsConstructor
 public class Book {
 
     private final long id;
