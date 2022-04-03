@@ -3,10 +3,10 @@ package ru.amlet.controller;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.stereotype.Component;
-import ru.amlet.entity.Author;
 import ru.amlet.entity.Book;
-import ru.amlet.entity.Genre;
 import ru.amlet.service.BookService;
+
+import java.util.List;
 
 @Component
 @ShellComponent
@@ -20,39 +20,27 @@ public class BookController {
 
     @ShellMethod(value = "Create new book", key = {"cnb", "createNewBook"})
     public long createBook(String name, String authorName, String genreName) {
-        Author author = new Author();
-        author.setName(authorName);
-        Genre genre = new Genre();
-        genre.setName(genreName);
-        Book book = Book.builder()
-                .name(name)
-                .author(author)
-                .genre(genre)
-                .build();
-        return bookService.createBook(book);
+        return bookService.createBook(name, authorName, genreName);
     }
 
-    @ShellMethod(value = "Find book", key = {"fb", "findBook"})
-    public Book find(String name) {
-        Book book = Book.builder()
-                .name(name)
-                .build();
-        return bookService.find(book);
+    @ShellMethod(value = "Find book", key = {"fbi", "findBookById"})
+    public Book findById(long id) {
+        return bookService.findById(id);
+    }
+
+    @ShellMethod(value = "Find book", key = {"fbn", "findBookByName"})
+    public Book findByName(String name) {
+        return bookService.findByName(name);
+    }
+
+    @ShellMethod(value = "Find all books", key = {"fab", "findAllBooks"})
+    public List<Book> findAll() {
+        return bookService.findAll();
     }
 
     @ShellMethod(value = "Update book", key = {"ub", "updateBook"})
     public void updateBook(long id, String name, String authorName, String genreName) {
-        Author author = new Author();
-        author.setName(authorName);
-        Genre genre = new Genre();
-        genre.setName(genreName);
-        Book book = Book.builder()
-                .id(id)
-                .name(name)
-                .author(author)
-                .genre(genre)
-                .build();
-        bookService.updateBook(book);
+        bookService.updateBook(id, name, authorName, genreName);
     }
 
     @ShellMethod(value = "Delete book", key = {"db", "deleteBook"})

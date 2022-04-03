@@ -9,7 +9,9 @@ public interface AuthorService {
 
     long createAuthor(Author author);
 
-    Author find(Author author);
+    Author findById(long id);
+
+    Author findByName(String name);
 
     void updateAuthor(Author author);
 

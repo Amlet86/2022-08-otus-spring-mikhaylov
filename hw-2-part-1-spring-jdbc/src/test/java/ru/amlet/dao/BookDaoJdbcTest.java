@@ -10,6 +10,9 @@ import ru.amlet.entity.Book;
 import ru.amlet.entity.Genre;
 import ru.amlet.exception.BookException;
 
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @JdbcTest
@@ -65,11 +68,9 @@ class BookDaoJdbcTest {
         author.setId(1);
         var genre = new Genre();
         genre.setId(1);
-        var expectedBook = new Book(1, "bookTest", author, genre);
+        var expectedBook = List.of(new Book(1, "bookTest", author, genre));
         var actualBooksList = dao.getAll();
-        actualBooksList.forEach(book -> {
-            assertEquals(expectedBook, book);
-        });
+        assertThat(actualBooksList).hasSameElementsAs(expectedBook);
     }
 
     @Test

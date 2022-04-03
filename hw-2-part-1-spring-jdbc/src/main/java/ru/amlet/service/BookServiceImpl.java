@@ -1,17 +1,12 @@
 package ru.amlet.service;
 
-import lombok.NonNull;
 import org.springframework.stereotype.Service;
 import ru.amlet.dao.BookDao;
-import ru.amlet.dao.GenreDao;
 import ru.amlet.entity.Author;
 import ru.amlet.entity.Book;
 import ru.amlet.entity.Genre;
-import ru.amlet.exception.AuthorException;
-import ru.amlet.exception.BookException;
-import ru.amlet.exception.GenreException;
 
-import java.util.Objects;
+import java.util.List;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -27,31 +22,42 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public long createBook(Book book) {
-        book.setAuthor(authorService.find(book.getAuthor()));
-        book.setGenre(genreService.find(book.getGenre()));
+    public long createBook(String name, String authorName, String genreName) {
+        Author author = authorService.findByName(authorName);
+        Genre genre = genreService.findByName(genreName);
+        Book book = Book.builder()
+                .name(name)
+                .author(author)
+                .genre(genre)
+                .build();
         return bookDao.createBook(book);
     }
 
     @Override
-    public Book find(@NonNull Book book) {
-        Book resultBook;
-        if (book.getId() != 0) {
-            resultBook = bookDao.getById(book.getId());
-        } else if (book.getName() != null) {
-            resultBook = bookDao.getByName(book.getName());
-        } else {
-            throw new BookException("Book with id: 0, name: null can not exist");
-        }
-        resultBook.setAuthor(authorService.find(resultBook.getAuthor()));
-        resultBook.setGenre(genreService.find(resultBook.getGenre()));
-        return resultBook;
+    public Book findById(long id) {
+        return bookDao.getById(id);
     }
 
     @Override
-    public void updateBook(Book book) {
-        book.setAuthor(authorService.find(book.getAuthor()));
-        book.setGenre(genreService.find(book.getGenre()));
+    public Book findByName(String name) {
+        return bookDao.getByName(name);
+    }
+
+    @Override
+    public List<Book> findAll() {
+        return bookDao.getAll();
+    }
+
+    @Override
+    public void updateBook(long id, String name, String authorName, String genreName) {
+        Author author = authorService.findByName(name);
+        Genre genre = genreService.findByName(genreName);
+        Book book = Book.builder()
+                .id(id)
+                .name(name)
+                .author(author)
+                .genre(genre)
+                .build();
         bookDao.updateBook(book);
     }
 

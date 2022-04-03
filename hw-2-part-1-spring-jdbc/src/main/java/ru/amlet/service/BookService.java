@@ -2,15 +2,21 @@ package ru.amlet.service;
 
 import ru.amlet.entity.Book;
 
+import java.util.List;
+
 public interface BookService {
 
-    long createBook(Book book);
+    long createBook(String name, String authorName, String genreName);
 
-     Book find(Book book);
+    Book findById(long id);
 
-     void updateBook(Book book);
+    Book findByName(String name);
 
-     void deleteBook(long id);
+    List<Book> findAll();
+
+    void updateBook(long id, String name, String authorName, String genreName);
+
+    void deleteBook(long id);
 
     int count();
 }

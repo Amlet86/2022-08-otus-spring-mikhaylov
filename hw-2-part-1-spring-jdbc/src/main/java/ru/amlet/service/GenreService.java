@@ -6,7 +6,9 @@ public interface GenreService {
 
     long createGenre(Genre genre);
 
-    Genre find(Genre genre);
+    Genre findById(long id);
+
+    Genre findByName(String name);
 
     void updateGenre(Genre genre);
 

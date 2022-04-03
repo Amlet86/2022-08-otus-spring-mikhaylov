@@ -10,6 +10,9 @@ import ru.amlet.entity.Author;
 import ru.amlet.entity.Book;
 import ru.amlet.entity.Genre;
 
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 
@@ -31,30 +34,52 @@ public class BookServiceImplTest {
     @DisplayName("Метод createBook создаёт книгу и возвращает её id")
     void shouldCreateBook() {
         var author = new Author(1, "authorName");
-        given(authorService.find(author))
+        given(authorService.findByName("authorName"))
                 .willReturn(author);
-        var genre = new Genre(1,"genreName");
-        given(genreService.find(genre))
+        var genre = new Genre(1, "genreName");
+        given(genreService.findByName("genreName"))
                 .willReturn(genre);
-        var book = Book.builder().id(1).name("bookName").author(author).genre(genre).build();
+        var book = Book.builder().name("bookName").author(author).genre(genre).build();
         given(bookDao.createBook(book))
                 .willReturn(1L);
-        var id = bookService.createBook(book);
+        var id = bookService.createBook("bookName", author.getName(), genre.getName());
         assertEquals(1, id);
     }
 
     @Test
-    @DisplayName("Метод find находит книгу и возвращает её")
-    void shouldFindBook() {
+    @DisplayName("Метод findById находит книгу по id и возвращает её")
+    void shouldFindBookById() {
         var author = new Author(1, "authorName");
-        var genre = new Genre(1,"genreName");
+        var genre = new Genre(1, "genreName");
         var expectedBook = Book.builder().id(1).name("bookName").author(author).genre(genre).build();
         given(bookDao.getById(expectedBook.getId()))
                 .willReturn(expectedBook);
+        var actualBook = bookService.findById(1);
+        assertEquals(expectedBook, actualBook);
+    }
+
+    @Test
+    @DisplayName("Метод findByName находит книгу по name и возвращает её")
+    void shouldFindBookByName() {
+        var author = new Author(1, "authorName");
+        var genre = new Genre(1, "genreName");
+        var expectedBook = Book.builder().id(1).name("bookName").author(author).genre(genre).build();
         given(bookDao.getByName(expectedBook.getName()))
                 .willReturn(expectedBook);
-        var actualBook = bookService.find(expectedBook);
+        var actualBook = bookService.findByName("bookName");
         assertEquals(expectedBook, actualBook);
+    }
+
+    @Test
+    @DisplayName("Метод findAll находит все книги и возвращает их")
+    void shouldFindAllBooks() {
+        var author = new Author(1, "authorName");
+        var genre = new Genre(1, "genreName");
+        var expectedBooksList = List.of(Book.builder().id(1).name("bookName").author(author).genre(genre).build());
+        given(bookDao.getAll())
+                .willReturn(expectedBooksList);
+        var actualBooksList = bookService.findAll();
+        assertThat(actualBooksList).hasSameElementsAs(expectedBooksList);
     }
 
     @Test

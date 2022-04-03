@@ -1,12 +1,8 @@
 package ru.amlet.service;
 
-import lombok.NonNull;
 import org.springframework.stereotype.Service;
-import ru.amlet.dao.AuthorDao;
 import ru.amlet.dao.GenreDao;
-import ru.amlet.entity.Author;
 import ru.amlet.entity.Genre;
-import ru.amlet.exception.AuthorException;
 
 @Service
 public class GenreServiceImpl implements GenreService {
@@ -23,14 +19,13 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Genre find(@NonNull Genre genre) {
-        if (genre.getId() != 0) {
-            return genreDao.getById(genre.getId());
-        }
-        if (genre.getName() != null) {
-            return genreDao.getByName(genre.getName());
-        }
-        throw new AuthorException("Author with id: 0, name: null can not exist");
+    public Genre findById(long id) {
+        return genreDao.getById(id);
+    }
+
+    @Override
+    public Genre findByName(String name) {
+        return genreDao.getByName(name);
     }
 
     @Override
