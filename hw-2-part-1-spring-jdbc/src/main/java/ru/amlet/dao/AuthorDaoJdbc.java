@@ -87,10 +87,7 @@ public class AuthorDaoJdbc implements AuthorDao {
         public Author mapRow(ResultSet resultSet, int i) throws SQLException {
             long id = resultSet.getLong("id");
             String name = resultSet.getString("name");
-            return Author.builder()
-                    .id(id)
-                    .name(name)
-                    .build();
+            return new Author(id, name);
         }
     }
 }

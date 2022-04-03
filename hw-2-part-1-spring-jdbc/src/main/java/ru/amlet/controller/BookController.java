@@ -20,8 +20,10 @@ public class BookController {
 
     @ShellMethod(value = "Create new book", key = {"cnb", "createNewBook"})
     public long createBook(String name, String authorName, String genreName) {
-        Author author = Author.builder().name(authorName).build();
-        Genre genre = Genre.builder().name(genreName).build();
+        Author author = new Author();
+        author.setName(authorName);
+        Genre genre = new Genre();
+        genre.setName(genreName);
         Book book = Book.builder()
                 .name(name)
                 .author(author)
@@ -40,8 +42,10 @@ public class BookController {
 
     @ShellMethod(value = "Update book", key = {"ub", "updateBook"})
     public void updateBook(long id, String name, String authorName, String genreName) {
-        Author author = Author.builder().name(authorName).build();
-        Genre genre = Genre.builder().name(genreName).build();
+        Author author = new Author();
+        author.setName(authorName);
+        Genre genre = new Genre();
+        genre.setName(genreName);
         Book book = Book.builder()
                 .id(id)
                 .name(name)

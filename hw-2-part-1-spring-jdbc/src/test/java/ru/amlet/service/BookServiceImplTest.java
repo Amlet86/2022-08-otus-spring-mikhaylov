@@ -30,10 +30,10 @@ public class BookServiceImplTest {
     @Test
     @DisplayName("Метод createBook создаёт книгу и возвращает её id")
     void shouldCreateBook() {
-        var author = Author.builder().id(1).name("authorName").build();
+        var author = new Author(1, "authorName");
         given(authorService.find(author))
                 .willReturn(author);
-        var genre = Genre.builder().id(1).name("genreName").build();
+        var genre = new Genre(1,"genreName");
         given(genreService.find(genre))
                 .willReturn(genre);
         var book = Book.builder().id(1).name("bookName").author(author).genre(genre).build();
@@ -46,8 +46,8 @@ public class BookServiceImplTest {
     @Test
     @DisplayName("Метод find находит книгу и возвращает её")
     void shouldFindBook() {
-        var author = Author.builder().id(1).name("authorName").build();
-        var genre = Genre.builder().id(1).name("genreName").build();
+        var author = new Author(1, "authorName");
+        var genre = new Genre(1,"genreName");
         var expectedBook = Book.builder().id(1).name("bookName").author(author).genre(genre).build();
         given(bookDao.getById(expectedBook.getId()))
                 .willReturn(expectedBook);

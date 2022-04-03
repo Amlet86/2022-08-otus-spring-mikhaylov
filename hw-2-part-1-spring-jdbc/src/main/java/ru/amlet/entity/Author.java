@@ -1,13 +1,15 @@
 package ru.amlet.entity;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Author {
 
-    private final long id;
+    private long id;
 
     private String name;
 }

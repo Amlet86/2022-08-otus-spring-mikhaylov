@@ -24,8 +24,10 @@ class BookDaoJdbcTest {
     @Test
     @DisplayName("Добавляет книгу в БД")
     void shouldCreateBook() {
-        var author = Author.builder().id(1).build();
-        var genre = Genre.builder().id(1).build();
+        var author = new Author();
+        author.setId(1);
+        var genre = new Genre();
+        genre.setId(1);
         var expectedBook = new Book(2, "book2", author, genre);
         dao.createBook(expectedBook);
         var actualBook = dao.getById(expectedBook.getId());
@@ -35,8 +37,10 @@ class BookDaoJdbcTest {
     @Test
     @DisplayName("Возвращает ожидаемую книгу по её name")
     void shouldReturnExpectedBookByName() {
-        var author = Author.builder().id(1).build();
-        var genre = Genre.builder().id(1).build();
+        var author = new Author();
+        author.setId(1);
+        var genre = new Genre();
+        genre.setId(1);
         var expectedBook = new Book(1, "bookTest", author, genre);
         var actualBook = dao.getByName(expectedBook.getName());
         assertEquals(expectedBook, actualBook);
@@ -45,8 +49,10 @@ class BookDaoJdbcTest {
     @Test
     @DisplayName("Возвращает ожидаемую книгу по её id")
     void shouldReturnExpectedBookById() {
-        var author = Author.builder().id(1).build();
-        var genre = Genre.builder().id(1).build();
+        var author = new Author();
+        author.setId(1);
+        var genre = new Genre();
+        genre.setId(1);
         var expectedBook = new Book(1, "bookTest", author, genre);
         var actualBook = dao.getById(expectedBook.getId());
         assertEquals(expectedBook, actualBook);
@@ -55,8 +61,10 @@ class BookDaoJdbcTest {
     @Test
     @DisplayName("Возвращает список книг из БД")
     void shouldReturnExpectedBooksList() {
-        var author = Author.builder().id(1).build();
-        var genre = Genre.builder().id(1).build();
+        var author = new Author();
+        author.setId(1);
+        var genre = new Genre();
+        genre.setId(1);
         var expectedBook = new Book(1, "bookTest", author, genre);
         var actualBooksList = dao.getAll();
         actualBooksList.forEach(book -> {
@@ -67,8 +75,10 @@ class BookDaoJdbcTest {
     @Test
     @DisplayName("Изменяет книгу в БД")
     void shouldUpdateBook() {
-        var author = Author.builder().id(1).build();
-        var genre = Genre.builder().id(1).build();
+        var author = new Author();
+        author.setId(1);
+        var genre = new Genre();
+        genre.setId(1);
         var expectedBook = new Book(1, "bookUpdated", author, genre);
         dao.updateBook(expectedBook);
         var actualBook = dao.getById(expectedBook.getId());
