@@ -44,7 +44,11 @@ public class BookDaoJdbc implements BookDao {
     @Override
     public Book getByName(String name) {
         try {
-            return jdbc.queryForObject("select id, name, author_id, genre_id from books where name = :name",
+            return jdbc.queryForObject("select books.id, books.name, author_id, genre_id, authors.name, genres.name " +
+                            "from books " +
+                            "join authors on books.author_id = authors.id " +
+                            "join genres on books.genre_id = genres.id " +
+                            "where books.name = :name",
                     Map.of("name", name), new BookMapper());
         } catch (EmptyResultDataAccessException e) {
             throw new BookException(String.format("Book name: %s does not exist", name));
@@ -56,7 +60,11 @@ public class BookDaoJdbc implements BookDao {
     @Override
     public Book getById(long id) {
         try {
-            return jdbc.queryForObject("select id, name, author_id, genre_id from books where id = :id",
+            return jdbc.queryForObject("select books.id, books.name, author_id, genre_id, authors.name, genres.name " +
+                            "from books " +
+                            "join authors on books.author_id = authors.id " +
+                            "join genres on books.genre_id = genres.id " +
+                            "where books.id = :id",
                     Map.of("id", id), new BookMapper());
         } catch (EmptyResultDataAccessException e) {
             throw new BookException(String.format("Book id: %s does not exist", id));
@@ -67,7 +75,11 @@ public class BookDaoJdbc implements BookDao {
 
     @Override
     public List<Book> getAll() {
-        return jdbc.query("select id, name, author_id, genre_id from books", new BookMapper());
+        return jdbc.query("select books.id, books.name, author_id, genre_id, authors.name, genres.name " +
+                        "from books " +
+                        "join authors on books.author_id = authors.id " +
+                        "join genres on books.genre_id = genres.id ",
+                new BookMapper());
     }
 
     @Override
@@ -96,14 +108,12 @@ public class BookDaoJdbc implements BookDao {
         @Override
         public Book mapRow(ResultSet resultSet, int i) throws SQLException {
             long id = resultSet.getLong("id");
-            String name = resultSet.getString("name");
-            Author author = new Author();
-            author.setId(resultSet.getLong("author_id"));
-            Genre genre = new Genre();
-            genre.setId(resultSet.getLong("genre_id"));
+            String bookName = resultSet.getString("books.name");
+            Author author = new Author(resultSet.getLong("author_id"), resultSet.getString("authors.name"));
+            Genre genre = new Genre(resultSet.getLong("genre_id"), resultSet.getString("genres.name"));
             return Book.builder()
                     .id(id)
-                    .name(name)
+                    .name(bookName)
                     .author(author)
                     .genre(genre)
                     .build();
