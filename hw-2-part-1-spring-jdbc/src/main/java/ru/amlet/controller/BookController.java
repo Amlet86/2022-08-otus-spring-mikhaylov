@@ -5,6 +5,7 @@ import org.springframework.shell.standard.ShellMethod;
 import org.springframework.stereotype.Component;
 import ru.amlet.entity.Book;
 import ru.amlet.service.BookService;
+import ru.amlet.service.TransformerService;
 
 import java.util.List;
 
@@ -13,9 +14,11 @@ import java.util.List;
 public class BookController {
 
     private final BookService bookService;
+    private final TransformerService transformerService;
 
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, TransformerService transformerService) {
         this.bookService = bookService;
+        this.transformerService = transformerService;
     }
 
     @ShellMethod(value = "Create new book", key = {"cnb", "createNewBook"})
@@ -24,18 +27,21 @@ public class BookController {
     }
 
     @ShellMethod(value = "Find book", key = {"fbi", "findBookById"})
-    public Book findById(long id) {
-        return bookService.findById(id);
+    public String findById(long id) {
+        Book book = bookService.findById(id);
+        return transformerService.bookTransform(book);
     }
 
     @ShellMethod(value = "Find book", key = {"fbn", "findBookByName"})
-    public Book findByName(String name) {
-        return bookService.findByName(name);
+    public String findByName(String name) {
+        Book book = bookService.findByName(name);
+        return transformerService.bookTransform(book);
     }
 
     @ShellMethod(value = "Find all books", key = {"fab", "findAllBooks"})
-    public List<Book> findAll() {
-        return bookService.findAll();
+    public String findAll() {
+        List<Book> books = bookService.findAll();
+        return transformerService.booksTransform(books);
     }
 
     @ShellMethod(value = "Update book", key = {"ub", "updateBook"})
