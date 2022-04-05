@@ -22,13 +22,13 @@ public class BookServiceImplTest {
 
     public final static int EXPECTED_BOOKS_COUNT = 1;
     @MockBean
-    AuthorService authorService;
+    private AuthorService authorService;
     @MockBean
-    GenreService genreService;
+    private GenreService genreService;
     @MockBean
-    BookDao bookDao;
+    private BookDao bookDao;
     @Autowired
-    BookService bookService;
+    private BookService bookService;
 
     @Test
     @DisplayName("Метод createBook создаёт книгу и возвращает её id")
