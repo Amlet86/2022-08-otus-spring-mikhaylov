@@ -10,7 +10,6 @@ import ru.amlet.service.TransformerService;
 import java.util.List;
 import java.util.Optional;
 
-@Component
 @ShellComponent
 public class BookController {
 
