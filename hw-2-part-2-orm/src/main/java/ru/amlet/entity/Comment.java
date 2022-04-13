@@ -30,4 +30,8 @@ public class Comment {
     public long getBookId() {
         return Objects.nonNull(book) ? book.getId() : 0;
     }
+
+    public String getBookName() {
+        return Objects.nonNull(book) ? book.getName() : "";
+    }
 }

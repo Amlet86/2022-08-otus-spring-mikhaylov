@@ -6,9 +6,7 @@ import ru.amlet.entity.Book;
 import ru.amlet.entity.Comment;
 import ru.amlet.entity.Genre;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TransformerServiceImpl implements TransformerService {
@@ -27,7 +25,7 @@ public class TransformerServiceImpl implements TransformerService {
     @Override
     public String booksTransform(List<Book> books) {
         if (books.isEmpty()) {
-            return "List of book is empty.";
+            return "List of books is empty.";
         }
         StringBuilder stringBuilder = new StringBuilder();
         books.forEach(book -> {
@@ -39,31 +37,59 @@ public class TransformerServiceImpl implements TransformerService {
 
     @Override
     public String authorTransform(Author author) {
-        throw new UnsupportedOperationException();
+        return "Name: " + author.getName() + ";";
     }
 
     @Override
     public String authorsTransform(List<Author> authors) {
-        throw new UnsupportedOperationException();
+        if (authors.isEmpty()) {
+            return "List of authors is empty.";
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        authors.forEach(author -> {
+            stringBuilder.append(authorTransform(author));
+            stringBuilder.append(System.lineSeparator());
+        });
+        return stringBuilder.toString();
     }
 
     @Override
     public String genreTransform(Genre genre) {
-        throw new UnsupportedOperationException();
+        return "Name: " + genre.getName() + ";";
     }
 
     @Override
     public String genresTransform(List<Genre> genres) {
-        throw new UnsupportedOperationException();
+        if (genres.isEmpty()) {
+            return "List of genres is empty.";
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        genres.forEach(genre -> {
+            stringBuilder.append(genreTransform(genre));
+            stringBuilder.append(System.lineSeparator());
+        });
+        return stringBuilder.toString();
     }
 
     @Override
     public String commentTransform(Comment comment) {
-        throw new UnsupportedOperationException();
+        return "Content: " +
+                comment.getContent() +
+                ", of book: " +
+                comment.getBookName() +
+                ";";
     }
 
     @Override
     public String commentsTransform(List<Comment> comments) {
-        throw new UnsupportedOperationException();
+        if (comments.isEmpty()) {
+            return "List of comments is empty.";
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        comments.forEach(comment -> {
+            stringBuilder.append(commentTransform(comment));
+            stringBuilder.append(System.lineSeparator());
+        });
+        return stringBuilder.toString();
     }
 }

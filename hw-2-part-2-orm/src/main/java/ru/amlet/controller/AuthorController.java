@@ -2,9 +2,7 @@ package ru.amlet.controller;
 
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
-import org.springframework.stereotype.Component;
 import ru.amlet.entity.Author;
-import ru.amlet.entity.Book;
 import ru.amlet.service.AuthorService;
 import ru.amlet.service.TransformerService;
 

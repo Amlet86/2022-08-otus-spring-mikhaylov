@@ -16,6 +16,7 @@ public class CommentRepositoryJpa implements CommentRepository {
 
     @PersistenceContext
     private final EntityManager entityManager;
+    private final static String GRAPH_NAME = "comment-entity-graph";
 
     public CommentRepositoryJpa(EntityManager entityManager) {
         this.entityManager = entityManager;
@@ -34,7 +35,7 @@ public class CommentRepositoryJpa implements CommentRepository {
     @Override
     public Optional<Comment> getById(long id) {
         Map<String, Object> properties =
-                Map.of("javax.persistence.fetchgraph", entityManager.getEntityGraph("comment-entity-graph"));
+                Map.of("javax.persistence.fetchgraph", entityManager.getEntityGraph(GRAPH_NAME));
         return Optional.ofNullable(entityManager.find(Comment.class, id, properties));
     }
 
@@ -44,6 +45,7 @@ public class CommentRepositoryJpa implements CommentRepository {
                 "select c from Comment c where c.content = :content",
                 Comment.class);
         query.setParameter("content", content);
+        query.setHint("javax.persistence.fetchgraph", entityManager.getEntityGraph(GRAPH_NAME));
         return query.getResultList();
     }
 
@@ -52,6 +54,7 @@ public class CommentRepositoryJpa implements CommentRepository {
         TypedQuery<Comment> query = entityManager.createQuery(
                 "select c from Comment c ",
                 Comment.class);
+        query.setHint("javax.persistence.fetchgraph", entityManager.getEntityGraph(GRAPH_NAME));
         return query.getResultList();
     }
 
