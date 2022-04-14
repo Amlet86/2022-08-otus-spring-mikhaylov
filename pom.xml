@@ -15,6 +15,7 @@
         <module>hw-1-part-3-boot</module>
         <module>hw-1-part-4-shell</module>
         <module>hw-2-part-1-spring-jdbc</module>
+        <module>hw-2-part-2-orm</module>
     </modules>
 
 </project>
