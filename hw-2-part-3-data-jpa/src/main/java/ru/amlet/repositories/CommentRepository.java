@@ -17,8 +17,4 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @EntityGraph(GRAPH_NAME)
     List<Comment> findByContent(String content);
 
-    @EntityGraph(GRAPH_NAME)
-    List<Comment> findAll();
-
-
 }

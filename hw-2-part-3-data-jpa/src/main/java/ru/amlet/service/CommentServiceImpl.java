@@ -44,12 +44,6 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<Comment> findAll() {
-        return commentRepository.findAll();
-    }
-
-    @Override
     @Transactional
     public void updateComment(long id, String content, long bookId) {
         Book book = bookRepository.findById(bookId)

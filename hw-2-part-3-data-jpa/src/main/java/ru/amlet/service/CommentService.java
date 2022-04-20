@@ -13,8 +13,6 @@ public interface CommentService {
 
     List<Comment> findByContent(String content);
 
-    List<Comment> findAll();
-
     void updateComment(long id, String content, long bookId);
 
     void deleteComment(long id);

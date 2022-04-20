@@ -49,15 +49,6 @@ class CommentRepositoryJpaTest {
     }
 
     @Test
-    @DisplayName("Возвращает список комментариев из БД")
-    void shouldReturnExpectedCommentsList() {
-        var expectedComment = testEntityManager.find(Comment.class, 1L);
-        var actualCommentsList = commentRepository.findAll();
-        assertEquals(2, actualCommentsList.size());
-        assertThat(actualCommentsList).contains(expectedComment);
-    }
-
-    @Test
     @DisplayName("Изменяет комментарий в БД")
     void shouldUpdateComment() {
         var expectedComment = testEntityManager.find(Comment.class, 1L);

@@ -39,12 +39,6 @@ public class CommentController {
         return transformerService.commentsTransform(comments);
     }
 
-    @ShellMethod(value = "Find all comments", key = {"fac", "findAllComments"})
-    public String findAll() {
-        List<Comment> comments = commentService.findAll();
-        return transformerService.commentsTransform(comments);
-    }
-
     @ShellMethod(value = "Update comment", key = {"uc", "updateComment"})
     public void updateComment(long id, String content, long bookId) {
         commentService.updateComment(id, content, bookId);
