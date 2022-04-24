@@ -12,6 +12,7 @@ spring:
   data:
     mongodb:
       database: testLibrary
+      port: 0
 
 mongock:
   runner-type: "ApplicationRunner"
