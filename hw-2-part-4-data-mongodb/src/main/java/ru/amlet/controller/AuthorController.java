@@ -22,7 +22,7 @@ public class AuthorController {
 
     @ShellMethod(value = "Create new author", key = {"cna", "createNewAuthor"})
     public String createAuthor(String name) {
-        Author author = authorService.createAuthor(name);
+        Author author = authorService.create(name);
         return transformerService.authorTransform(author);
     }
 
@@ -47,12 +47,12 @@ public class AuthorController {
 
     @ShellMethod(value = "Update author", key = {"ua", "updateAuthor"})
     public void updateAuthor(String id, String name) {
-        authorService.updateAuthor(id, name);
+        authorService.update(id, name);
     }
 
     @ShellMethod(value = "Delete author", key = {"da", "deleteAuthor"})
     public void deleteAuthor(String id) {
-        authorService.deleteAuthor(id);
+        authorService.deleteById(id);
     }
 
     @ShellMethod(value = "Count authors", key = {"cas", "countAuthors"})

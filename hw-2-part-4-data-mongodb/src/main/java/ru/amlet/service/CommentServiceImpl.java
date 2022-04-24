@@ -23,7 +23,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment createComment(String content, long bookId) {
+    public Comment create(String content, long bookId) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new BookException(String.format("Book id: %s does not exist", bookId)));
         return commentRepository.save(new Comment(null, content, book));
@@ -40,14 +40,14 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void updateComment(String id, String content, long bookId) {
+    public void update(String id, String content, long bookId) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new BookException(String.format("Book id: %s does not exist", bookId)));
         commentRepository.save(new Comment(id, content, book));
     }
 
     @Override
-    public void deleteComment(String id) {
+    public void deleteById(String id) {
         commentRepository.deleteAllById(List.of(id));
     }
 

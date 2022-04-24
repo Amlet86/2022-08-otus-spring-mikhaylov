@@ -22,7 +22,7 @@ public class BookController {
 
     @ShellMethod(value = "Create new book", key = {"cnb", "createNewBook"})
     public String createBook(String name, String authorName, String genreName) {
-        Book book = bookService.createBook(name, authorName, genreName);
+        Book book = bookService.create(name, authorName, genreName);
         return transformerService.bookTransform(book);
     }
 
@@ -47,12 +47,12 @@ public class BookController {
 
     @ShellMethod(value = "Update book", key = {"ub", "updateBook"})
     public void updateBook(String id, String name, String authorName, String genreName) {
-        bookService.updateBook(id, name, authorName, genreName);
+        bookService.update(id, name, authorName, genreName);
     }
 
     @ShellMethod(value = "Delete book", key = {"db", "deleteBook"})
     public void deleteBook(String id) {
-        bookService.deleteBook(id);
+        bookService.deleteById(id);
     }
 
     @ShellMethod(value = "Count books", key = {"cbs", "countBooks"})

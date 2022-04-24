@@ -22,7 +22,7 @@ public class GenreController {
 
     @ShellMethod(value = "Create new genre", key = {"cng", "createNewGenre"})
     public String createGenre(String name) {
-        Genre genre = genreService.createGenre(name);
+        Genre genre = genreService.create(name);
         return transformerService.genreTransform(genre);
     }
 
@@ -47,12 +47,12 @@ public class GenreController {
 
     @ShellMethod(value = "Update genre", key = {"ug", "updateGenre"})
     public void updateGenre(String id, String name) {
-        genreService.updateGenre(id, name);
+        genreService.update(id, name);
     }
 
     @ShellMethod(value = "Delete genre", key = {"dg", "deleteGenre"})
     public void deleteGenre(String id) {
-        genreService.deleteGenre(id);
+        genreService.deleteById(id);
     }
 
     @ShellMethod(value = "Count genres", key = {"cgs", "countGenres"})

@@ -25,7 +25,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book createBook(String name, String authorName, String genreName) {
+    public Book create(String name, String authorName, String genreName) {
         List<Author> authors = authorService.findByName(authorName);
         Author author = checkAuthorsList(authors, authorName);
         List<Genre> genres = genreService.findByName(genreName);
@@ -54,7 +54,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void updateBook(String id, String name, String authorName, String genreName) {
+    public void update(String id, String name, String authorName, String genreName) {
         List<Author> authors = authorService.findByName(authorName);
         Author author = checkAuthorsList(authors, authorName);
         List<Genre> genres = genreService.findByName(genreName);
@@ -69,7 +69,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void deleteBook(String id) {
+    public void deleteById(String id) {
         bookRepository.deleteAllById(List.of(id));
     }
 

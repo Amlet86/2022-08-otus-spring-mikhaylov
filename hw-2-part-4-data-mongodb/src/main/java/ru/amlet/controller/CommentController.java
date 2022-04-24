@@ -22,7 +22,7 @@ public class CommentController {
 
     @ShellMethod(value = "Create new comment", key = {"cnc", "createNewComment"})
     public String createComment(String content, long bookId) {
-        Comment comment = commentService.createComment(content, bookId);
+        Comment comment = commentService.create(content, bookId);
         return transformerService.commentTransform(comment);
     }
 
@@ -41,12 +41,12 @@ public class CommentController {
 
     @ShellMethod(value = "Update comment", key = {"uc", "updateComment"})
     public void updateComment(String id, String content, long bookId) {
-        commentService.updateComment(id, content, bookId);
+        commentService.update(id, content, bookId);
     }
 
     @ShellMethod(value = "Delete comment", key = {"dc", "deleteComment"})
     public void deleteComment(String id) {
-        commentService.deleteComment(id);
+        commentService.deleteById(id);
     }
 
     @ShellMethod(value = "Count comments", key = {"ccs", "countComments"})

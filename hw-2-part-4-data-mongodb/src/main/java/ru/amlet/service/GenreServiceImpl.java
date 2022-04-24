@@ -17,7 +17,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Genre createGenre(String name) {
+    public Genre create(String name) {
         return genreRepository.save(new Genre(name));
     }
 
@@ -37,12 +37,12 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public void updateGenre(String id, String name) {
+    public void update(String id, String name) {
         genreRepository.save(new Genre(id, name));
     }
 
     @Override
-    public void deleteGenre(String id) {
+    public void deleteById(String id) {
         genreRepository.deleteAllById(List.of(id));
     }
 

@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface AuthorService {
 
-    Author createAuthor(String name);
+    Author create(String name);
 
     Optional<Author> findById(String id);
 
@@ -15,9 +15,9 @@ public interface AuthorService {
 
     List<Author> findAll();
 
-    void updateAuthor(String id, String name);
+    void update(String id, String name);
 
-    void deleteAuthor(String id);
+    void deleteById(String id);
 
     long count();
 }
