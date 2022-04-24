@@ -73,7 +73,7 @@ class CommentRepositoryTest {
         query.addCriteria(Criteria.where("content").is("secondComment"));
         var actualComment = mongoTemplate.findOne(query, Comment.class);
         assertNotNull(actualComment);
-        commentRepository.deleteAllById(List.of(actualComment.getId()));
+        commentRepository.deleteById(actualComment.getId());
         var deletedComment = mongoTemplate.findOne(query, Comment.class);
         assertNull(deletedComment);
     }

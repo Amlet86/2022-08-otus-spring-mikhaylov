@@ -13,7 +13,9 @@ public class TransformerServiceImpl implements TransformerService {
 
     @Override
     public String bookTransform(Book book) {
-        return "Name: " +
+        return "id: " +
+                book.getId() +
+                " Name: " +
                 book.getName() +
                 ", Author: " +
                 book.getAuthorName() +
@@ -37,7 +39,7 @@ public class TransformerServiceImpl implements TransformerService {
 
     @Override
     public String authorTransform(Author author) {
-        return "Name: " + author.getName() + ";";
+        return "id: " + author.getId() + " Name: " + author.getName() + ";";
     }
 
     @Override
@@ -55,7 +57,7 @@ public class TransformerServiceImpl implements TransformerService {
 
     @Override
     public String genreTransform(Genre genre) {
-        return "Name: " + genre.getName() + ";";
+        return "id: " + genre.getId() + " Name: " + genre.getName() + ";";
     }
 
     @Override

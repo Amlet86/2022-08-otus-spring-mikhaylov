@@ -80,7 +80,7 @@ class GenreRepositoryTest {
         query.addCriteria(Criteria.where("name").is("secondGenre"));
         var actualGenre = mongoTemplate.findOne(query, Genre.class);
         assertNotNull(actualGenre);
-        genreRepository.deleteAllById(List.of(actualGenre.getId()));
+        genreRepository.deleteById(actualGenre.getId());
         var deletedGenre = mongoTemplate.findOne(query, Genre.class);
         assertNull(deletedGenre);
     }

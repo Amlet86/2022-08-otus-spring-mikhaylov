@@ -88,7 +88,7 @@ class BookRepositoryTest {
         query.addCriteria(Criteria.where("name").is("secondBook"));
         var actualBook = mongoTemplate.findOne(query, Book.class);
         assertNotNull(actualBook);
-        bookRepository.deleteAllById(List.of(actualBook.getId()));
+        bookRepository.deleteById(actualBook.getId());
         var deletedBook = mongoTemplate.findOne(query, Book.class);
         assertNull(deletedBook);
     }

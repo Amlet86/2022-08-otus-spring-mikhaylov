@@ -81,7 +81,7 @@ class AuthorRepositoryTest {
         query.addCriteria(Criteria.where("name").is("secondAuthor"));
         var actualAuthor = mongoTemplate.findOne(query, Author.class);
         assertNotNull(actualAuthor);
-        authorRepository.deleteAllById(List.of(actualAuthor.getId()));
+        authorRepository.deleteById(actualAuthor.getId());
         var deletedAuthor = mongoTemplate.findOne(query, Author.class);
         assertNull(deletedAuthor);
     }
