@@ -33,4 +33,5 @@ public class AuthorCascadeDeleteMongoEventListener extends AbstractMongoEventLis
             throw new AuthorException("Can't delete Author id: " + id + " because exist book(s) with this Author.");
         }
     }
+
 }
