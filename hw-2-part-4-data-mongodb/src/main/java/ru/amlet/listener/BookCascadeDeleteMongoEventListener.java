@@ -1,17 +1,13 @@
 package ru.amlet.listener;
 
-import org.bson.Document;
+import lombok.val;
 import org.springframework.data.mongodb.core.mapping.event.AbstractMongoEventListener;
 import org.springframework.data.mongodb.core.mapping.event.BeforeDeleteEvent;
 import org.springframework.stereotype.Component;
 import ru.amlet.entity.Book;
-import ru.amlet.entity.Comment;
 import ru.amlet.exception.BookException;
 import ru.amlet.repositories.BookRepository;
 import ru.amlet.repositories.CommentRepository;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class BookCascadeDeleteMongoEventListener extends AbstractMongoEventListener<Book> {
@@ -26,14 +22,11 @@ public class BookCascadeDeleteMongoEventListener extends AbstractMongoEventListe
 
     @Override
     public void onBeforeDelete(BeforeDeleteEvent<Book> event) {
-        Document document = (Document) event.getSource().get("_id");
-        ArrayList list = (ArrayList) document.get("$in");
-        String id = list.get(0).toString();
+        super.onBeforeDelete(event);
+        val source = event.getSource();
+        val id = source.get("_id").toString();
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new BookException("Book id: " + id + "doesn't exist."));
-        List<Comment> comments = commentRepository.findByBook(book);
-        comments.forEach(comment -> {
-            commentRepository.deleteById(comment.getId());
-        });
+        commentRepository.deleteAllByBook(book);
     }
 }

@@ -70,7 +70,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void deleteById(String id) {
-        bookRepository.deleteAllById(List.of(id));
+        bookRepository.deleteById(id);
     }
 
     @Override

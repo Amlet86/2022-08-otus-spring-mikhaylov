@@ -13,6 +13,6 @@ public interface CommentRepository extends MongoRepository<Comment, String> {
 
     List<Comment> findByContent(String content);
 
-    List<Comment> findByBook(Book book);
+    void deleteAllByBook(Book book);
 
 }

@@ -1,6 +1,6 @@
 package ru.amlet.listener;
 
-import org.bson.Document;
+import lombok.val;
 import org.springframework.data.mongodb.core.mapping.event.AbstractMongoEventListener;
 import org.springframework.data.mongodb.core.mapping.event.BeforeDeleteEvent;
 import org.springframework.stereotype.Component;
@@ -8,8 +8,6 @@ import ru.amlet.entity.Author;
 import ru.amlet.exception.AuthorException;
 import ru.amlet.repositories.AuthorRepository;
 import ru.amlet.repositories.BookRepository;
-
-import java.util.ArrayList;
 
 @Component
 public class AuthorCascadeDeleteMongoEventListener extends AbstractMongoEventListener<Author> {
@@ -24,9 +22,9 @@ public class AuthorCascadeDeleteMongoEventListener extends AbstractMongoEventLis
 
     @Override
     public void onBeforeDelete(BeforeDeleteEvent<Author> event) {
-        Document document = (Document) event.getSource().get("_id");
-        ArrayList list = (ArrayList) document.get("$in");
-        String id = list.get(0).toString();
+        super.onBeforeDelete(event);
+        val source = event.getSource();
+        val id = source.get("_id").toString();
         Author author = authorRepository.findById(id)
                 .orElseThrow(() -> new AuthorException("Author id: " + id + "doesn't exist."));
         if (!bookRepository.findByAuthor(author).isEmpty()) {

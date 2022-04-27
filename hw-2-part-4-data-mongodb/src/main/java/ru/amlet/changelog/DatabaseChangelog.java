@@ -24,7 +24,7 @@ public class DatabaseChangelog {
     private final Book thirdBook = Book.builder().name("thirdBook").author(firstAuthor).genre(firstGenre).build();
     private final Comment firstComment = new Comment(null, "firstComment", firstBook);
     private final Comment secondComment = new Comment(null, "secondComment", firstBook);
-    private final Comment thirdComment = new Comment(null, "thirdComment", firstBook);
+    private final Comment thirdComment = new Comment(null, "thirdComment", thirdBook);
 
     @ChangeSet(order = "001", id = "dropDb", author = "amlet", runAlways = true)
     public void dropDb(MongoDatabase db) {

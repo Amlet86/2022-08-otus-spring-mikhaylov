@@ -43,7 +43,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public void deleteById(String id) {
-        authorRepository.deleteAllById(List.of(id));
+        authorRepository.deleteById(id);
     }
 
     @Override
