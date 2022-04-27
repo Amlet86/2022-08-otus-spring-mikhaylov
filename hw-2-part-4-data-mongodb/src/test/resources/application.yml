@@ -1,0 +1,19 @@
+spring:
+  shell:
+    interactive:
+      enabled: false
+  main:
+    allow-circular-references: true
+
+  mongodb:
+    embedded:
+      version: 3.4.5
+
+  data:
+    mongodb:
+      database: testLibrary
+      port: 0
+
+mongock:
+  runner-type: "ApplicationRunner"
+  change-logs-scan-package: ru.amlet.changelog

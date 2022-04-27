@@ -17,6 +17,7 @@
         <module>hw-2-part-1-spring-jdbc</module>
         <module>hw-2-part-2-orm</module>
         <module>hw-2-part-3-data-jpa</module>
+        <module>hw-2-part-4-data-mongodb</module>
     </modules>
 
 </project>
