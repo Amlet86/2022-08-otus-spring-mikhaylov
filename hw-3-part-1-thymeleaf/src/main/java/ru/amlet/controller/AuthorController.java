@@ -64,7 +64,7 @@ public class AuthorController {
     @Validated
     @PostMapping("/authors/edit")
     public String saveAuthor(@Valid @ModelAttribute("author") AuthorDto authorDto,
-                             BindingResult bindingResult, Model model) {
+                             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "editAuthor";
         }
