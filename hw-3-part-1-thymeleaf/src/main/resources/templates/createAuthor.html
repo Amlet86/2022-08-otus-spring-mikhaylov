@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Create author</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+
+        .errors {
+            color: red;
+        }
+    </style>
+
+    <style type="text/css" th:inline="text">
+        [[h3]] {
+            background-image: url([[@{/listmark.png}]]);
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<form id="author-create-form" action="createAuthor.html" th:method="post" th:action="@{/authors/create}">
+    <h3>Fill author's name:</h3>
+
+    <div class="row">
+        <label for="author-name-input">Name:</label>
+        <input id="author-name-input" name="name" type="text"/>
+
+        <button type="submit">Create</button>
+        <a href="authors.html" th:href="@{/authors}"><button type="button">Cancel</button></a>
+    </div>
+</form>
+
+</body>
+</html>
