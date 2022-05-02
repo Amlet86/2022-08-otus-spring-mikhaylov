@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Authors</title>
+    <title>Books</title>
     <style type="text/css">
         body {
             padding: 50px;
@@ -46,33 +46,37 @@
 </head>
 <body>
 
-<h3>List authors:</h3>
+<h3>List books:</h3>
 
-<table class="authors">
+<table class="books">
     <thead>
     <tr>
         <th>Id</th>
         <th>Name</th>
+        <th>Author</th>
+        <th>Genre</th>
         <th>Actions</th>
     </tr>
     </thead>
     <tbody>
-        <tr th:each="author : ${authors}">
-            <td th:text="${author.id}"></td>
-            <td th:text="${author.name}"></td>
+        <tr th:each="book : ${books}">
+            <td th:text="${book.id}"></td>
+            <td th:text="${book.name}"></td>
+            <td th:text="${book.author.name}"></td>
+            <td th:text="${book.genre.name}"></td>
             <td>
-                <a th:href="@{/authors/delete(id=${author.id})}" href="deleteAuthor.html">Delete</a>
-                <a th:href="@{/authors/edit(id=${author.id})}" href="editAuthor.html">Edit</a>
+                <a th:href="@{/books/delete(id=${book.id})}" href="deleteBook.html">Delete</a>
+                <a th:href="@{/books/edit(id=${book.id})}" href="editBook.html">Edit</a>
             </td>
         </tr>
     </tbody>
 </table>
 
-<h4><a href="findAuthor.html" th:href="@{/authors/find}">Find author</a></h4>
+<h4><a href="findBook.html" th:href="@{/books/find}">Find book</a></h4>
 
-<h4><a href="createAuthor.html" th:href="@{/authors/create}">Create author</a></h4>
+<h4><a href="createBook.html" th:href="@{/books/create}">Create book</a></h4>
 
-<h4><a href="countAuthors.html" th:href="@{/authors/count}">Count authors</a></h4>
+<h4><a href="countBooks.html" th:href="@{/books/count}">Count books</a></h4>
 
 </body>
 </html>

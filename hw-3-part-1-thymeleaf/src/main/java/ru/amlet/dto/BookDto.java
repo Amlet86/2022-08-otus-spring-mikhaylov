@@ -3,13 +3,15 @@ package ru.amlet.dto;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import ru.amlet.entity.Author;
+import ru.amlet.entity.Book;
+import ru.amlet.entity.Genre;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthorDto {
+public class BookDto {
 
     private long id;
 
@@ -17,15 +19,15 @@ public class AuthorDto {
     @Size(min = 2, max = 100, message = "{name-field-should-has-expected-size}")
     private String name;
 
-    public AuthorDto(String name) {
-        this.name = name;
+    private Author author;
+
+    private Genre genre;
+
+    public Book toDomainObject(){
+        return new Book(id, name, author, genre);
     }
 
-    public Author toDomainObject(){
-        return new Author(id, name);
-    }
-
-    public static AuthorDto fromDomainObject(Author author) {
-        return new AuthorDto(author.getId(), author.getName());
+    public static BookDto fromDomainObject(Book book) {
+        return new BookDto(book.getId(), book.getName(), book.getAuthor(), book.getGenre());
     }
 }

@@ -31,14 +31,14 @@ public class AuthorController {
     }
 
     @GetMapping("/authors/create")
-    public String createAuthor() {
+    public String createPage() {
         return "createAuthor";
     }
 
     @Validated
     @PostMapping("/authors/create")
     public String createAuthor(@Valid @ModelAttribute("author") AuthorDto authorDto,
-                               BindingResult bindingResult) {
+                             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "createAuthor";
         }
@@ -73,8 +73,15 @@ public class AuthorController {
         return "redirect:/authors";
     }
 
-    @GetMapping("/authors/delete/{id}")
-    public String deleteAuthor(@PathVariable("id") long id) {
+    @GetMapping("/authors/delete")
+    public String deletePage(@RequestParam("id") int id, Model model) {
+        Optional<Author> author = Optional.ofNullable(authorService.findById(id).orElseThrow(AuthorException::new));
+        model.addAttribute("author", author.get());
+        return "deleteAuthor";
+    }
+
+    @PostMapping("/authors/delete")
+    public String deleteAuthor(@RequestParam("id") long id) {
         authorService.deleteAuthor(id);
         return "redirect:/authors";
     }

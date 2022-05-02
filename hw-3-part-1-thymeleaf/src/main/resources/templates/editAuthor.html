@@ -37,7 +37,7 @@
 </head>
 <body>
 
-<form id="authors-edit-form" action="editAuthor.html" th:action="@{/authors/edit(id=${author.id})}" th:method="post"
+<form id="authors-edit-form" action="editAuthor.html" th:method="post" th:action="@{/authors/edit(id=${author.id})}"
       th:object="${author}">
     <h3>Edit author:</h3>
 
