@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Books</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+
+        h3 {
+            background-image: url("../static/listmark.png");
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+
+        .errors {
+            color: red;
+        }
+
+        table, th, td {
+          border: 1px solid black;
+          border-collapse: collapse;
+        }
+    </style>
+
+    <style type="text/css" th:inline="text">
+        [[h3]] {
+            background-image: url([[@{/listmark.png}]]);
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+
+    </style>
+</head>
+<body>
+
+<h3>List books:</h3>
+
+<table class="books">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Author</th>
+        <th>Genre</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr th:each="book : ${books}">
+            <td th:text="${book.id}"></td>
+            <td th:text="${book.name}"></td>
+            <td th:text="${book.author.name}"></td>
+            <td th:text="${book.genre.name}"></td>
+            <td>
+                <a th:href="@{/books/delete(id=${book.id})}" href="deleteBook.html">Delete</a>
+                <a th:href="@{/books/edit(id=${book.id})}" href="editBook.html">Edit</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h4><a href="findBook.html" th:href="@{/books/find}">Find book</a></h4>
+
+<h4><a href="createBook.html" th:href="@{/books/create}">Create book</a></h4>
+
+<h4><a href="countBooks.html" th:href="@{/books/count}">Count books</a></h4>
+
+</body>
+</html>
