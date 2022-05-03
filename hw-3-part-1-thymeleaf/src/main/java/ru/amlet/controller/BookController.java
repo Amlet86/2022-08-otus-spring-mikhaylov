@@ -38,7 +38,7 @@ public class BookController {
     public String findAll(Model model) {
         List<Book> books = bookService.findAll();
         model.addAttribute("books", books);
-        return "books";
+        return "books/books";
     }
 
     @GetMapping("/books/create")
@@ -47,7 +47,7 @@ public class BookController {
         List<Genre> genres = genreService.findAll();
         model.addAttribute("authors", authors);
         model.addAttribute("genres", genres);
-        return "createBook";
+        return "books/createBook";
     }
 
     @Validated
@@ -55,7 +55,7 @@ public class BookController {
     public String createBook(@Valid @ModelAttribute("book") BookDto bookDto,
                              BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "createBook";
+            return "books/createBook";
         }
         Book book = bookDto.toDomainObject();
         bookService.createBook(book.getName(), book.getAuthorName(), book.getGenreName());
@@ -66,7 +66,7 @@ public class BookController {
     public String findByName(@RequestParam(value = "name", required = false) String name, Model model) {
         List<Book> books = bookService.findByName(name);
         model.addAttribute("books", books);
-        return "findBook";
+        return "books/findBook";
     }
 
     @GetMapping("/books/edit")
@@ -77,7 +77,7 @@ public class BookController {
         model.addAttribute("book", book.get());
         model.addAttribute("authors", authors);
         model.addAttribute("genres", genres);
-        return "editBook";
+        return "books/editBook";
     }
 
     @Validated
@@ -85,7 +85,7 @@ public class BookController {
     public String saveBook(@Valid @ModelAttribute("book") BookDto bookDto,
                            BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "editBook";
+            return "books/editBook";
         }
         Book book = bookDto.toDomainObject();
         bookService.updateBook(book.getId(), book.getName(), book.getAuthorName(), book.getGenreName());
@@ -96,7 +96,7 @@ public class BookController {
     public String deletePage(@RequestParam("id") int id, Model model) {
         Optional<Book> book = Optional.ofNullable(bookService.findById(id).orElseThrow(BookException::new));
         model.addAttribute("book", book.get());
-        return "deleteBook";
+        return "books/deleteBook";
     }
 
     @PostMapping("/books/delete")
@@ -109,7 +109,7 @@ public class BookController {
     public String count(Model model) {
         long count = bookService.count();
         model.addAttribute("countBooks", count);
-        return "countBooks";
+        return "books/countBooks";
     }
 
 }

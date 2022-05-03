@@ -27,12 +27,12 @@ public class AuthorController {
     public String findAll(Model model) {
         List<Author> authors = authorService.findAll();
         model.addAttribute("authors", authors);
-        return "authors";
+        return "authors/authors";
     }
 
     @GetMapping("/authors/create")
     public String createPage() {
-        return "createAuthor";
+        return "authors/createAuthor";
     }
 
     @Validated
@@ -40,7 +40,7 @@ public class AuthorController {
     public String createAuthor(@Valid @ModelAttribute("author") AuthorDto authorDto,
                              BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "createAuthor";
+            return "authors/createAuthor";
         }
         Author author = authorDto.toDomainObject();
         authorService.createAuthor(author.getName());
@@ -51,14 +51,14 @@ public class AuthorController {
     public String findByName(@RequestParam(value = "name", required = false) String name, Model model) {
         List<Author> authors = authorService.findByName(name);
         model.addAttribute("authors", authors);
-        return "findAuthor";
+        return "authors/findAuthor";
     }
 
     @GetMapping("/authors/edit")
     public String editPage(@RequestParam("id") int id, Model model) {
         Optional<Author> author = Optional.ofNullable(authorService.findById(id).orElseThrow(AuthorException::new));
         model.addAttribute("author", author.get());
-        return "editAuthor";
+        return "authors/editAuthor";
     }
 
     @Validated
@@ -66,7 +66,7 @@ public class AuthorController {
     public String saveAuthor(@Valid @ModelAttribute("author") AuthorDto authorDto,
                              BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "editAuthor";
+            return "authors/editAuthor";
         }
         Author author = authorDto.toDomainObject();
         authorService.updateAuthor(author.getId(), author.getName());
@@ -77,7 +77,7 @@ public class AuthorController {
     public String deletePage(@RequestParam("id") int id, Model model) {
         Optional<Author> author = Optional.ofNullable(authorService.findById(id).orElseThrow(AuthorException::new));
         model.addAttribute("author", author.get());
-        return "deleteAuthor";
+        return "authors/deleteAuthor";
     }
 
     @PostMapping("/authors/delete")
@@ -90,6 +90,6 @@ public class AuthorController {
     public String count(Model model) {
         long count = authorService.count();
         model.addAttribute("countAuthors", count);
-        return "countAuthors";
+        return "authors/countAuthors";
     }
 }
