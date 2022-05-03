@@ -19,7 +19,6 @@ import ru.amlet.service.GenreService;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class BookController {
@@ -71,10 +70,10 @@ public class BookController {
 
     @GetMapping("/books/edit")
     public String editPage(@RequestParam("id") int id, Model model) {
-        Optional<Book> book = Optional.ofNullable(bookService.findById(id).orElseThrow(BookException::new));
+        Book book = bookService.findById(id).orElseThrow(BookException::new);
         List<Author> authors = authorService.findAll();
         List<Genre> genres = genreService.findAll();
-        model.addAttribute("book", book.get());
+        model.addAttribute("book", book);
         model.addAttribute("authors", authors);
         model.addAttribute("genres", genres);
         return "books/editBook";
@@ -94,8 +93,8 @@ public class BookController {
 
     @GetMapping("/books/delete")
     public String deletePage(@RequestParam("id") int id, Model model) {
-        Optional<Book> book = Optional.ofNullable(bookService.findById(id).orElseThrow(BookException::new));
-        model.addAttribute("book", book.get());
+        Book book = bookService.findById(id).orElseThrow(BookException::new);
+        model.addAttribute("book", book);
         return "books/deleteBook";
     }
 
