@@ -9,9 +9,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.amlet.dto.BookDto;
+import ru.amlet.entity.Author;
 import ru.amlet.entity.Book;
+import ru.amlet.entity.Genre;
 import ru.amlet.exception.BookException;
+import ru.amlet.service.AuthorService;
 import ru.amlet.service.BookService;
+import ru.amlet.service.GenreService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -21,9 +25,13 @@ import java.util.Optional;
 public class BookController {
 
     private final BookService bookService;
+    private final AuthorService authorService;
+    private final GenreService genreService;
 
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, AuthorService authorService, GenreService genreService) {
         this.bookService = bookService;
+        this.authorService = authorService;
+        this.genreService = genreService;
     }
 
     @GetMapping("/books")
@@ -34,7 +42,11 @@ public class BookController {
     }
 
     @GetMapping("/books/create")
-    public String createPage() {
+    public String createPage(Model model) {
+        List<Author> authors = authorService.findAll();
+        List<Genre> genres = genreService.findAll();
+        model.addAttribute("authors", authors);
+        model.addAttribute("genres", genres);
         return "createBook";
     }
 
@@ -60,7 +72,11 @@ public class BookController {
     @GetMapping("/books/edit")
     public String editPage(@RequestParam("id") int id, Model model) {
         Optional<Book> book = Optional.ofNullable(bookService.findById(id).orElseThrow(BookException::new));
+        List<Author> authors = authorService.findAll();
+        List<Genre> genres = genreService.findAll();
         model.addAttribute("book", book.get());
+        model.addAttribute("authors", authors);
+        model.addAttribute("genres", genres);
         return "editBook";
     }
 
