@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>Library</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .chapters {
+            border: 1px solid steelblue;
+            width: 150px;
+            border-collapse: collapse;
+        }
+
+        .chapters tr td, th {
+            padding: 5px;
+            border: 1px solid steelblue;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Welcome to The Library</h1>
+
+    <table class="chapters">
+        <thead>
+            <tr>
+                <td align="center"><h3>Select chapter</h3></td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a href="books.html" th:href="@{/books_page}" >Books</a></td>
+            </tr>
+            <tr>
+                <td><a href="authors.html" th:href="@{/authors}" >Authors</a></td>
+            </tr>
+            <tr>
+                <td><a href="genres.html" th:href="@{/genres}" >Genres</a></td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

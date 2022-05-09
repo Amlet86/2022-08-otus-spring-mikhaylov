@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Books</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .books {
+            border: 1px solid steelblue;
+            width: 300px;
+            border-collapse: collapse;
+        }
+
+        .books tr td, th {
+            padding: 5px;
+            border: 1px solid;
+        }
+
+        .books td:last-child, td:first-child {
+            width: 50px;
+        }
+    </style>
+
+    <script src="/webjars/jquery/3.6.0/jquery.min.js"></script>
+
+</head>
+<body>
+
+<h2>List books:</h2>
+
+<div>
+    <b>Name of book:</b>
+    <input id="findBookName" type="text"/>
+    <button onclick="findBook()">Find</button><br />
+    <br/>
+</div>
+
+<table class="books">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Author</th>
+            <th>Genre</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>0</td>
+            <td><input id="0-name" type="text"/></td>
+            <td><input id="0-authorName" type="text"/></td>
+            <td><input id="0-genreName" type="text"/></td>
+            <td>
+                <button onclick="createBook()">Create</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<script>
+    $(function () {
+        $.get('/books').done(function (books) {
+            books.forEach(function (book) {
+                $('tbody').append(`
+                    <tr>
+                        <td>${book.id}</td>
+                        <td><input id="${book.id}-name" type="text" value="${book.name}"/></td>
+                        <td><input id="${book.id}-authorName" type="text" value="${book.authorName}"/></td>
+                        <td><input id="${book.id}-genreName" type="text" value="${book.genreName}"/></td>
+                        <td>
+                            <button onclick="deleteBook('${book.id}')">Delete</button>
+                            <button onclick="editBook('${book.id}')">Save</button>
+                        </td>
+                    </tr>
+                `)
+            });
+        })
+    });
+
+
+    function findBook() {
+        let name = document.getElementById("findBookName").value;
+
+        $.get('/books/' + name).done(function (books) {
+            books.forEach(function (book) {
+                $('tbody').replaceWith(`
+                    <tr>
+                        <td>${book.id}</td>
+                        <td><input id="${book.id}-name" type="text" value="${book.name}"/></td>
+                        <td><input id="${book.id}-authorName" type="text" value="${book.authorName}"/></td>
+                        <td><input id="${book.id}-genreName" type="text" value="${book.genreName}"/></td>
+                        <td>
+                            <button onclick="deleteBook('${book.id}')">Delete</button>
+                            <button onclick="editBook('${book.id}')">Save</button>
+                        </td>
+                    </tr>
+                `)
+            });
+        })
+    }
+
+    function deleteBook(id) {
+        $.ajax({
+            url: '/books/' + id,
+            type: 'DELETE'
+        });
+    }
+
+    function editBook(id) {
+        let name = document.getElementById(id + "-name").value;
+        let authorName = document.getElementById(id + "-authorName").value;
+        let genreName = document.getElementById(id + "-genreName").value;
+
+        $.ajax({
+            type: 'PUT',
+            url: '/books',
+            data: { id:id, name: name, authorName: authorName, genreName:genreName }
+        });
+    }
+
+    function createBook() {
+        let name = document.getElementById("0-name").value;
+        let authorName = document.getElementById("0-authorName").value;
+        let genreName = document.getElementById("0-genreName").value;
+
+        $.ajax({
+            type: 'POST',
+            url: '/books',
+            data: { name: name, authorName: authorName, genreName:genreName }
+        });
+    }
+
+</script>
+
+<h4><a href="books.html" th:href="@{/books_page}">Refresh</a></h4>
+
+<h4><a href="index.html" th:href="@{/}">Index page</a></h4>
+
+</body>
+</html>
