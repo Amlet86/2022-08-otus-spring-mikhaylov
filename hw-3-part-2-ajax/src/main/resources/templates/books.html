@@ -63,7 +63,7 @@
 
 <script>
     $(function () {
-        $.get('/books').done(function (books) {
+        $.get('/api/books?name=').done(function (books) {
             books.forEach(function (book) {
                 $('tbody').append(`
                     <tr>
@@ -81,11 +81,10 @@
         })
     });
 
-
     function findBook() {
         let name = document.getElementById("findBookName").value;
 
-        $.get('/books/' + name).done(function (books) {
+        $.get('/api/books?name=' + name).done(function (books) {
             books.forEach(function (book) {
                 $('tbody').replaceWith(`
                     <tr>
@@ -105,7 +104,7 @@
 
     function deleteBook(id) {
         $.ajax({
-            url: '/books/' + id,
+            url: '/api/books/' + id,
             type: 'DELETE'
         });
     }
@@ -117,8 +116,10 @@
 
         $.ajax({
             type: 'PUT',
-            url: '/books',
-            data: { id:id, name: name, authorName: authorName, genreName:genreName }
+            url: '/api/books',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify({ id:id, name: name, authorName: authorName, genreName:genreName })
         });
     }
 
@@ -129,8 +130,10 @@
 
         $.ajax({
             type: 'POST',
-            url: '/books',
-            data: { name: name, authorName: authorName, genreName:genreName }
+            url: '/api/books',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify({ name: name, authorName: authorName, genreName:genreName })
         });
     }
 

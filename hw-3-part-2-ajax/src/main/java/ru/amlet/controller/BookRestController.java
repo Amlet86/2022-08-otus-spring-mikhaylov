@@ -1,5 +1,6 @@
 package ru.amlet.controller;
 
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import ru.amlet.dto.BookDto;
 import ru.amlet.service.BookService;
@@ -16,38 +17,32 @@ public class BookRestController {
         this.bookService = bookService;
     }
 
-    @GetMapping("/books")
-    public List<BookDto> findAll() {
-        return bookService.findAll().stream()
-                .map(BookDto::toDto)
-                .collect(Collectors.toList());
+    @GetMapping("/api/books")
+    public List<BookDto> findByName(@RequestParam("name") String name) {
+        if (ObjectUtils.isEmpty(name)) {
+            return bookService.findAll().stream()
+                    .map(BookDto::toDto)
+                    .collect(Collectors.toList());
+        } else {
+            return bookService.findByName(name).stream()
+                    .map(BookDto::toDto)
+                    .collect(Collectors.toList());
+        }
     }
 
-    @GetMapping("/books/{name}")
-    public List<BookDto> findByName(@PathVariable("name") String name) {
-        return bookService.findByName(name).stream()
-                .map(BookDto::toDto)
-                .collect(Collectors.toList());
-    }
-
-    @DeleteMapping("/books/{id}")
+    @DeleteMapping("/api/books/{id}")
     public void deleteBook(@PathVariable("id") long id) {
         bookService.deleteBook(id);
     }
 
-    @PutMapping("/books")
-    public void editPage(@RequestParam("id") int id,
-                         @RequestParam("name") String name,
-                         @RequestParam("authorName") String authorName,
-                         @RequestParam("genreName") String genreName) {
-        bookService.updateBook(id, name, authorName, genreName);
+    @PutMapping("/api/books")
+    public void editBook(@RequestBody BookDto bookDto) {
+        bookService.updateBook(bookDto.getId(), bookDto.getName(), bookDto.getAuthorName(), bookDto.getGenreName());
     }
 
-    @PostMapping("/books")
-    public BookDto createBook(@RequestParam("name") String name,
-                             @RequestParam("authorName") String authorName,
-                             @RequestParam("genreName") String genreName) {
-        return BookDto.toDto(bookService.createBook(name, authorName, genreName));
+    @PostMapping("/api/books")
+    public BookDto createBook(@RequestBody BookDto bookDto) {
+        return BookDto.toDto(bookService.createBook(bookDto.getName(), bookDto.getAuthorName(), bookDto.getGenreName()));
     }
 
 }
