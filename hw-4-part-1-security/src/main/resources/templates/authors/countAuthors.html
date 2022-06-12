@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Count authors</title>
+    <style type="text/css" th:inline="text">
+        [[h3]] {
+            background-image: url([[@{/listmark.png}]]);
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<form id="count-authors-form" action="countAuthors.html" th:method="get" th:action="@{/authors/count}">
+
+    <h3 th:text="${countAuthors}"></h3>
+    <a href="/authors">Back</a>
+
+</form>
+
+</body>
+</html>
