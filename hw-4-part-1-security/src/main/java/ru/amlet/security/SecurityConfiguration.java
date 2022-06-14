@@ -3,6 +3,7 @@ package ru.amlet.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,10 +18,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Override
+    public void configure(WebSecurity web) {
+        web.ignoring()
+                .antMatchers("/h2-console/**");
+    }
+
+    @Override
     public void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                    .formLogin()
-                    .defaultSuccessUrl("/", true);
+                .formLogin()
+                .defaultSuccessUrl("/", true);
     }
 
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
