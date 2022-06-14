@@ -6,7 +6,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -14,7 +13,7 @@ import java.util.Collections;
 @Setter
 @Entity
 @Table(name = "users")
-@NamedEntityGraph(name = "user-entity-graph", attributeNodes = {@NamedAttributeNode("role")})
+@NamedEntityGraph(name = "user-entity-graph", attributeNodes = {@NamedAttributeNode("authority")})
 public class User implements UserDetails {
 
     @Id
@@ -28,11 +27,11 @@ public class User implements UserDetails {
     private String password;
 
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    private Role role;
+    private Authority authority;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(role);
+        return Collections.singletonList(authority);
     }
 
     @Override

@@ -1,6 +1,6 @@
-insert into roles (name) values ('ADMIN'), ('USER');
+insert into authorities (name) values ('ROLE_ADMIN'), ('ROLE_USER');
 
-insert into users (name, pwd, role_id)
+insert into users (name, pwd, authority_id)
 values ('admin', '{bcrypt}$2a$12$ugmjrIwWFzxh8xLaNO8JX.10RfuybICjweoDiFANFVkOX1lE38D/m', 1), ('user', '{noop}password', 2);
 
 insert into authors (name) values ('firstAuthor');

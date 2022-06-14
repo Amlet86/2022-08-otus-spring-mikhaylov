@@ -9,8 +9,8 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "roles")
-public class Role implements GrantedAuthority {
+@Table(name = "authorities")
+public class Authority implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

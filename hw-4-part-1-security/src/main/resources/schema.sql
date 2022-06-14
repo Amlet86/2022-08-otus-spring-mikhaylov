@@ -1,9 +1,9 @@
-CREATE TABLE roles (id IDENTITY PRIMARY KEY, name VARCHAR(255));
+CREATE TABLE authorities (id IDENTITY PRIMARY KEY, name VARCHAR(255));
 
 CREATE TABLE users (id IDENTITY PRIMARY KEY, name VARCHAR(255),
                     pwd VARCHAR(255),
-                    role_id BIGINT,
-                    FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE);
+                    authority_id BIGINT,
+                    FOREIGN KEY (authority_id) REFERENCES authorities(id) ON DELETE CASCADE);
 
 CREATE TABLE authors (id IDENTITY PRIMARY KEY, name VARCHAR(255));
 
