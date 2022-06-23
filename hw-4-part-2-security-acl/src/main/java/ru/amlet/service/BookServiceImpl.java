@@ -1,5 +1,6 @@
 package ru.amlet.service;
 
+import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -59,12 +60,14 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional(readOnly = true)
+    @PostFilter("hasPermission(filterObject, 'READ') or hasPermission(filterObject, 'ADMINISTRATION')")
     public List<Book> findByName(String name) {
         return bookRepository.findByName(name);
     }
 
     @Override
     @Transactional(readOnly = true)
+    @PostFilter("hasPermission(filterObject, 'READ') or hasPermission(filterObject, 'ADMINISTRATION')")
     public List<Book> findAll() {
         return bookRepository.findAll();
     }

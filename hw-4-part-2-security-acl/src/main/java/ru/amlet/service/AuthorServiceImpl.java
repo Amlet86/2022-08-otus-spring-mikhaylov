@@ -1,12 +1,12 @@
 package ru.amlet.service;
 
+import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.amlet.entity.Author;
-import ru.amlet.exception.AuthorException;
 import ru.amlet.exception.AuthorityException;
 import ru.amlet.repositories.AuthorRepository;
 
@@ -41,11 +41,13 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     @Transactional(readOnly = true)
+    @PostFilter("hasPermission(filterObject, 'READ') or hasPermission(filterObject, 'ADMINISTRATION')")
     public List<Author> findByName(String name) {
         return authorRepository.findByName(name);
     }
 
     @Transactional(readOnly = true)
+    @PostFilter("hasPermission(filterObject, 'READ') or hasPermission(filterObject, 'ADMINISTRATION')")
     public List<Author> findAll() {
         return authorRepository.findAll();
     }
