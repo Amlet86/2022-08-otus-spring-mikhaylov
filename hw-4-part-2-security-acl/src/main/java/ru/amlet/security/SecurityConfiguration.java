@@ -30,8 +30,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .formLogin()
                 .and()
-                .authorizeRequests().antMatchers("/books/**", "/authors/**", "/genres/**").authenticated();
-    }
+                .authorizeRequests()
+                .antMatchers("/books/create", "/books/edit", "/books/delete").hasAuthority("ROLE_ADMIN")
+                .antMatchers("/authors/create", "/authors/edit", "/authors/delete").hasAuthority("ROLE_ADMIN")
+                .antMatchers("/books", "/books/**", "/authors", "/authors/**", "/genres", "/genres/**").authenticated();
+                    }
 
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService);

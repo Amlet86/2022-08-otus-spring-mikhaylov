@@ -1,6 +1,5 @@
 package ru.amlet.controller;
 
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,7 +42,6 @@ public class BookController {
     }
 
     @GetMapping("/books/create")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String createPage(Model model) {
         List<Author> authors = authorService.findAll();
         List<Genre> genres = genreService.findAll();
@@ -54,7 +52,6 @@ public class BookController {
 
     @Validated
     @PostMapping("/books/create")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String createBook(@Valid @ModelAttribute("book") BookDto bookDto,
                              BindingResult bindingResult, Authentication authentication) {
         if (bindingResult.hasErrors()) {
@@ -73,7 +70,6 @@ public class BookController {
     }
 
     @GetMapping("/books/edit")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String editPage(@RequestParam("id") int id, Model model) {
         Book book = bookService.findById(id).orElseThrow(BookException::new);
         List<Author> authors = authorService.findAll();
@@ -86,7 +82,6 @@ public class BookController {
 
     @Validated
     @PostMapping("/books/edit")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String saveBook(@Valid @ModelAttribute("book") BookDto bookDto,
                            BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -98,7 +93,6 @@ public class BookController {
     }
 
     @GetMapping("/books/delete")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String deletePage(@RequestParam("id") int id, Model model) {
         Book book = bookService.findById(id).orElseThrow(BookException::new);
         model.addAttribute("book", book);
@@ -106,7 +100,6 @@ public class BookController {
     }
 
     @PostMapping("/books/delete")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String deleteBook(@RequestParam("id") long id) {
         bookService.deleteBook(id);
         return "redirect:/books";

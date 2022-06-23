@@ -1,6 +1,5 @@
 package ru.amlet.controller;
 
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +13,6 @@ import ru.amlet.dto.AuthorDto;
 import ru.amlet.entity.Author;
 import ru.amlet.exception.AuthorException;
 import ru.amlet.service.AuthorService;
-import ru.amlet.service.PermissionService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -36,14 +34,12 @@ public class AuthorController {
     }
 
     @GetMapping("/authors/create")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String createPage() {
         return "authors/createAuthor";
     }
 
     @Validated
     @PostMapping("/authors/create")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String createAuthor(@Valid @ModelAttribute("author") AuthorDto authorDto,
                              BindingResult bindingResult, Authentication authentication) {
         if (bindingResult.hasErrors()) {
@@ -62,7 +58,6 @@ public class AuthorController {
     }
 
     @GetMapping("/authors/edit")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String editPage(@RequestParam("id") int id, Model model) {
         Author author = authorService.findById(id).orElseThrow(AuthorException::new);
         model.addAttribute("author", author);
@@ -71,7 +66,6 @@ public class AuthorController {
 
     @Validated
     @PostMapping("/authors/edit")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String saveAuthor(@Valid @ModelAttribute("author") AuthorDto authorDto,
                              BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -83,7 +77,6 @@ public class AuthorController {
     }
 
     @GetMapping("/authors/delete")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String deletePage(@RequestParam("id") int id, Model model) {
         Author author = authorService.findById(id).orElseThrow(AuthorException::new);
         model.addAttribute("author", author);
@@ -91,7 +84,6 @@ public class AuthorController {
     }
 
     @PostMapping("/authors/delete")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String deleteAuthor(@RequestParam("id") long id) {
         authorService.deleteAuthor(id);
         return "redirect:/authors";
