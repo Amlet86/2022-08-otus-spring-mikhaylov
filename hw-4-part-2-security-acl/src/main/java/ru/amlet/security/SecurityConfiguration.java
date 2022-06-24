@@ -20,6 +20,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService);
+    }
+
+    @Override
     public void configure(WebSecurity web) {
         web.ignoring()
                 .antMatchers("/h2-console/**");
@@ -34,10 +39,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/books/create", "/books/edit", "/books/delete").hasAuthority("ROLE_ADMIN")
                 .antMatchers("/authors/create", "/authors/edit", "/authors/delete").hasAuthority("ROLE_ADMIN")
                 .antMatchers("/books", "/books/**", "/authors", "/authors/**", "/genres", "/genres/**").authenticated();
-                    }
-
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);
     }
 
     @Bean
