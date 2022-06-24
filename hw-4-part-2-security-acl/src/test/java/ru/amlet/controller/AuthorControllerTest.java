@@ -1,4 +1,4 @@
-package ru.amlet.security;
+package ru.amlet.controller;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.amlet.controller.AuthorController;
 import ru.amlet.service.AuthorService;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -19,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(AuthorController.class)
 @DisplayName("Класс AuthorController")
-public class AuthorSecurityTest {
+public class AuthorControllerTest {
 
     @MockBean
     private AuthorService authorService;
