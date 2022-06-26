@@ -21,6 +21,7 @@
         <module>hw-3-part-1-thymeleaf</module>
         <module>hw-3-part-2-ajax</module>
         <module>hw-4-part-1-security</module>
+        <module>hw-4-part-2-security-acl</module>
     </modules>
 
 </project>
