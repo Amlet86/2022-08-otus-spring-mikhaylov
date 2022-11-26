@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.amlet.entity.Answer;
 import ru.amlet.entity.Player;
 import ru.amlet.entity.Question;
-import ru.amlet.entity.Quiz;
+import ru.amlet.entity.QuizState;
 
 import java.util.List;
 import java.util.Objects;
@@ -15,20 +15,23 @@ public class QuizServiceImpl implements QuizService {
 
     private final IOService ioService;
     private final QuestionService questionService;
-    private final MessageConstructor messageConstructor;
+    private final AnswerMessageConstructor answerMessageConstructor;
+    private final ResultMessageConstructor resultMessageConstructor;
     private final LeadingScoreService leadingScoreService;
     private final int lowestPassingScore;
     private final String greetingAndAcquaintance;
 
     public QuizServiceImpl(IOService ioService,
                            QuestionService questionService,
-                           MessageConstructor messageConstructor,
+                           AnswerMessageConstructor answerMessageConstructor,
+                           ResultMessageConstructor resultMessageConstructor,
                            LeadingScoreService leadingScoreService,
                            @Value("${lowest.passing.score}") int lowestPassingScore,
                            @Value("${greeting.acquaintance}") String greetingAndAcquaintance) {
         this.ioService = ioService;
         this.questionService = questionService;
-        this.messageConstructor = messageConstructor;
+        this.answerMessageConstructor = answerMessageConstructor;
+        this.resultMessageConstructor = resultMessageConstructor;
         this.leadingScoreService = leadingScoreService;
         this.lowestPassingScore = lowestPassingScore;
         this.greetingAndAcquaintance = greetingAndAcquaintance;
@@ -37,15 +40,15 @@ public class QuizServiceImpl implements QuizService {
     @Override
     public void conducting() {
         Player player = greetingAndAcquaintance();
-        Quiz quiz = new Quiz(player, lowestPassingScore);
+        QuizState quizState = new QuizState(player, lowestPassingScore);
 
         List<Question> questions = questionService.getQuestions();
         for (Question question : questions) {
             askQuestion(question);
             Answer playersAnswer = new Answer(getAnswer());
-            quiz.incrementScore(leadingScoreService.countScore(question, playersAnswer));
+            quizState.incrementScore(leadingScoreService.countScore(question, playersAnswer));
         }
-        outputResult(quiz);
+        outputResult(quizState);
     }
 
     private Player greetingAndAcquaintance() {
@@ -59,7 +62,7 @@ public class QuizServiceImpl implements QuizService {
         ioService.writeString(question.getQuestion());
         if (Objects.nonNull(question.getAnswers()) &&
                 !question.getAnswers().isEmpty()) {
-            String questionText = messageConstructor.createAnswerMessage(question);
+            String questionText = answerMessageConstructor.createAnswerMessage(question);
             ioService.writeString(questionText);
         }
     }
@@ -70,8 +73,8 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public void outputResult(Quiz quiz) {
-        String resultText = messageConstructor.createResultMessage(quiz);
+    public void outputResult(QuizState quizState) {
+        String resultText = resultMessageConstructor.createResultMessage(quizState);
         ioService.writeString(resultText);
     }
 

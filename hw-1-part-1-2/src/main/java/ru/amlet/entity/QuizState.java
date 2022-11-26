@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Quiz {
+public class QuizState {
 
     private final int lowestPassingScore;
 
@@ -15,7 +15,7 @@ public class Quiz {
 
     private int score;
 
-    public Quiz(Player player, int lowestPassingScore) {
+    public QuizState(Player player, int lowestPassingScore) {
         this.player = player;
         this.lowestPassingScore = lowestPassingScore;
     }

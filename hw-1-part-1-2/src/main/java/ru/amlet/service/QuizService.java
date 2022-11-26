@@ -1,7 +1,7 @@
 package ru.amlet.service;
 
 import ru.amlet.entity.Question;
-import ru.amlet.entity.Quiz;
+import ru.amlet.entity.QuizState;
 
 public interface QuizService {
 
@@ -11,5 +11,5 @@ public interface QuizService {
 
     String getAnswer();
 
-    void outputResult(Quiz quiz);
+    void outputResult(QuizState quizState);
 }
