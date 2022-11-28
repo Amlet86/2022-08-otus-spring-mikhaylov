@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Authors</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .authors {
+            border: 1px solid steelblue;
+            width: 300px;
+            border-collapse: collapse;
+        }
+
+        .authors tr td, th {
+            padding: 5px;
+            border: 1px solid;
+        }
+
+        .authors td:last-child, td:first-child {
+            width: 50px;
+        }
+    </style>
+
+    <script src="/webjars/jquery/3.6.0/jquery.min.js"></script>
+
+</head>
+<body>
+
+<h2>List of authors:</h2>
+
+<div>
+    <b>Name of author:</b>
+    <input id="findAuthorName" type="text"/>
+    <button onclick="findAuthor()">Find</button><br />
+    <br/>
+</div>
+
+<table class="authors">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>0</td>
+            <td><input id="0-name" type="text"/></td>
+            <td>
+                <button onclick="createAuthor()">Create</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<script>
+    $(function () {
+        $.get('/api/authors?name=').done(function (authors) {
+            authors.forEach(function (author) {
+                $('tbody').append(`
+                    <tr>
+                        <td>${author.id}</td>
+                        <td><input id="${author.id}-name" type="text" value="${author.name}"/></td>
+                        <td>
+                            <button onclick="editAuthor('${author.id}')">Save</button>
+                        </td>
+                    </tr>
+                `)
+            });
+        })
+    });
+
+    function findAuthor() {
+        let name = document.getElementById("findAuthorName").value;
+
+        $.get('/api/authors?name=' + name).done(function (authors) {
+            authors.forEach(function (author) {
+                $('tbody').replaceWith(`
+                    <tr>
+                        <td>${author.id}</td>
+                        <td><input id="${author.id}-name" type="text" value="${author.name}"/></td>
+                        <td>
+                            <button onclick="editAuthor('${author.id}')">Save</button>
+                        </td>
+                    </tr>
+                `)
+            });
+        })
+    }
+
+    function editAuthor(id) {
+        let name = document.getElementById(id + "-name").value;
+
+        $.ajax({
+            type: 'PUT',
+            url: '/api/authors',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify({ id:id, name: name })
+        });
+
+        $( document ).ajaxStop(function() {
+            window.location = window.location;
+        });
+    }
+
+    function createAuthor() {
+        let name = document.getElementById("0-name").value;
+
+        $.ajax({
+            type: 'POST',
+            url: '/api/authors',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify({ name: name })
+        });
+
+        $( document ).ajaxStop(function() {
+            window.location = window.location;
+        });
+    }
+
+</script>
+
+<h4><a href="authors.html" th:href="@{/authors_page}">Refresh</a></h4>
+
+<h4><a href="index.html" th:href="@{/}">Index page</a></h4>
+
+</body>
+</html>

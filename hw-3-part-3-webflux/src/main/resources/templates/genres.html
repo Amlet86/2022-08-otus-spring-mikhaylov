@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Genres</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .genres {
+            border: 1px solid steelblue;
+            width: 300px;
+            border-collapse: collapse;
+        }
+
+        .genres tr td, th {
+            padding: 5px;
+            border: 1px solid;
+        }
+
+        .genres td:last-child, td:first-child {
+            width: 50px;
+        }
+    </style>
+
+    <script src="/webjars/jquery/3.6.0/jquery.min.js"></script>
+
+</head>
+<body>
+
+<h2>List of genres:</h2>
+
+<div>
+    <b>Name of genre:</b>
+    <input id="findGenreName" type="text"/>
+    <button onclick="findGenre()">Find</button><br />
+    <br/>
+</div>
+
+<table class="genres">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>0</td>
+            <td><input id="0-name" type="text"/></td>
+            <td>
+                <button onclick="createGenre()">Create</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<script>
+    $(function () {
+        $.get('/api/genres?name=').done(function (genres) {
+            genres.forEach(function (genre) {
+                $('tbody').append(`
+                    <tr>
+                        <td>${genre.id}</td>
+                        <td><input id="${genre.id}-name" type="text" value="${genre.name}"/></td>
+                        <td>
+                            <button onclick="editGenre('${genre.id}')">Save</button>
+                        </td>
+                    </tr>
+                `)
+            });
+        })
+    });
+
+    function findGenre() {
+        let name = document.getElementById("findGenreName").value;
+
+        $.get('/api/genres?name=' + name).done(function (genres) {
+            genres.forEach(function (genre) {
+                $('tbody').replaceWith(`
+                    <tr>
+                        <td>${genre.id}</td>
+                        <td><input id="${genre.id}-name" type="text" value="${genre.name}"/></td>
+                        <td>
+                            <button onclick="editGenre('${genre.id}')">Save</button>
+                        </td>
+                    </tr>
+                `)
+            });
+        })
+    }
+
+    function editGenre(id) {
+        let name = document.getElementById(id + "-name").value;
+
+        $.ajax({
+            type: 'PUT',
+            url: '/api/genres',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify({ id:id, name: name })
+        });
+
+        $( document ).ajaxStop(function() {
+            window.location = window.location;
+        });
+    }
+
+    function createGenre() {
+        let name = document.getElementById("0-name").value;
+
+        $.ajax({
+            type: 'POST',
+            url: '/api/genres',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify({ name: name })
+        });
+
+        $( document ).ajaxStop(function() {
+            window.location = window.location;
+        });
+    }
+
+
+</script>
+
+<h4><a href="genres.html" th:href="@{/genres_page}">Refresh</a></h4>
+
+<h4><a href="index.html" th:href="@{/}">Index page</a></h4>
+
+</body>
+</html>
