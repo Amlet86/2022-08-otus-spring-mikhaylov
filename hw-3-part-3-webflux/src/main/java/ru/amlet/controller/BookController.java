@@ -8,7 +8,7 @@ public class BookController {
 
     @GetMapping("/books_page")
     public String booksPage() {
-        return "books";
+        return "books2";
     }
 
 }

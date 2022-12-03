@@ -63,15 +63,12 @@
 </table>
 
 <script>
-    let res = [];
-    let ris = [];
-
     $(function () {
         $.get('/api/authors?name=').done(function (authors) {
             res = authors;
             authors.forEach(function (author) {
                 $('#0-author').append(`
-                    <option value="${author.name}">${author.name}</option>
+                    <option value="${author.id}">${author.name}</option>
                 `)
             });
         })
@@ -79,7 +76,7 @@
             ris = genres;
             genres.forEach(function (genre) {
                 $('#0-genre').append(`
-                    <option value="${genre.name}">${genre.name}</option>
+                    <option value="${genre.id}">${genre.name}</option>
                 `)
             });
         })
@@ -153,18 +150,15 @@
 
     function createBook() {
         let name = document.getElementById("0-name").value;
-        let author = document.getElementById("0-author").value;
-        let genre = document.getElementById("0-genre").value;
-
-        const authorSearch = res.filter(({name}) => name === author)[0]
-        const genreSearch = ris.filter(({name}) => name === genre)[0]
+        let authorId = document.getElementById("0-author").value;
+        let genreId = document.getElementById("0-genre").value;
 
         $.ajax({
             type: 'POST',
-            url: '/api/v1/books',
+            url: '/api/v2/books',
             contentType: 'application/json',
             dataType: 'json',
-            data: JSON.stringify({name: name, author: authorSearch, genre: genreSearch})
+            data: JSON.stringify({name: name, author: {id: authorId}, genre: {id: genreId}})
         });
 
         $(document).ajaxStop(function () {

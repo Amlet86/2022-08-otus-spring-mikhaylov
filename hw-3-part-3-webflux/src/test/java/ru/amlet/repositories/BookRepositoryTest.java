@@ -1,5 +1,6 @@
 package ru.amlet.repositories;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
@@ -24,24 +25,26 @@ class BookRepositoryTest {
     private final Book secondBook = Book.builder().name("secondBook").author(secondAuthor).genre(secondGenre).build();
     private final Book thirdBook = Book.builder().name("thirdBook").author(firstAuthor).genre(secondGenre).build();
 
-
     @Autowired
     private BookRepository bookRepository;
 
-    @Test
-    void getAll() {
+    @BeforeEach
+    void before() {
         bookRepository
                 .saveAll(Arrays.asList(firstBook, secondBook, thirdBook))
-                .doOnComplete(() -> {
-                    Flux<Book> bookFlux = bookRepository.findAll();
-                    StepVerifier
-                            .create(bookFlux)
-                            .assertNext(book -> assertEquals(firstBook, book))
-                            .assertNext(book -> assertEquals(secondBook, book))
-                            .assertNext(book -> assertEquals(thirdBook, book))
-                            .expectComplete()
-                            .verify();
-                })
                 .subscribe();
     }
+
+    @Test
+    void getAll() {
+        Flux<Book> bookFlux = bookRepository.findAll();
+        StepVerifier
+                .create(bookFlux)
+                .assertNext(book -> assertEquals(firstBook, book))
+                .assertNext(book -> assertEquals(secondBook, book))
+                .assertNext(book -> assertEquals(thirdBook, book))
+                .expectComplete()
+                .verify();
+    }
+
 }
