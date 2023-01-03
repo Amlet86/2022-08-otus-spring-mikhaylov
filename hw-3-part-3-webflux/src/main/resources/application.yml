@@ -1,0 +1,13 @@
+spring:
+  mongodb:
+    embedded:
+      version: 3.4.5
+
+  data:
+    mongodb:
+      database: library
+      port: 0
+
+logging:
+  level:
+    root: INFO
