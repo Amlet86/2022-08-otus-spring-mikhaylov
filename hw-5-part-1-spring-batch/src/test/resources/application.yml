@@ -1,0 +1,42 @@
+spring:
+  main:
+    allow-circular-references: true # без этого не заведется spring shell
+  shell:
+    interactive:
+      enabled: false
+
+  batch:
+    job:
+      enabled: false # job не будет стартовать сразу при запуске app
+
+  mongodb:
+    embedded:
+      version: 3.4.5
+
+  data:
+    mongodb:
+      database: library
+      port: 27017
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+
+  sql:
+    init:
+      mode: always
+      data-locations: data.sql
+      schema-locations: schema.sql
+
+  h2:
+    console:
+      path: /h2-console
+      settings:
+        web-allow-others: true
+      enabled: true
+
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    show-sql: true
