@@ -45,7 +45,7 @@ public class ConvertService {
                                           Map<Long, GenreMongo> genreMongoMap) {
         return commentMongoMap.getOrDefault(commentJpa.getId(),
                 new CommentMongo(
-                        null,
+                        new ObjectId(),
                         commentJpa.getContent(),
                         bookJpaToMongo(commentJpa.getBookJpa(), bookMongoMap, authorMongoMap, genreMongoMap),
                         commentJpa.getId()));

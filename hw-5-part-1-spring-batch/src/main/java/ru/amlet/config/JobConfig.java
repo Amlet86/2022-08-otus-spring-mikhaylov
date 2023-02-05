@@ -1,12 +1,11 @@
 package ru.amlet.config;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.batch.core.ChunkListener;
+import org.springframework.batch.core.ItemWriteListener;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
@@ -18,6 +17,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.lang.NonNull;
+import ru.amlet.caсhe.AuthorMongoCache;
+import ru.amlet.caсhe.BookMongoCache;
+import ru.amlet.caсhe.CommentMongoCache;
+import ru.amlet.caсhe.GenreMongoCache;
 import ru.amlet.entity.jpa.AuthorJpa;
 import ru.amlet.entity.jpa.BookJpa;
 import ru.amlet.entity.jpa.CommentJpa;
@@ -28,10 +31,9 @@ import ru.amlet.entity.mongo.CommentMongo;
 import ru.amlet.entity.mongo.GenreMongo;
 import ru.amlet.service.ConvertService;
 
+import javax.batch.api.listener.JobListener;
 import javax.persistence.EntityManagerFactory;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Configuration
 @RequiredArgsConstructor
@@ -39,16 +41,16 @@ public class JobConfig {
 
     private static final int CHUNK_SIZE = 5;
     public static final String IMPORT_LIBRARY_JOB_NAME = "importLibraryJob";
-    private static final Map<Long, AuthorMongo> AUTHOR_MONGO_MAP = new ConcurrentHashMap<>();
-    private static final Map<Long, GenreMongo> GENRE_MONGO_MAP = new ConcurrentHashMap<>();
-    private static final Map<Long, BookMongo> BOOK_MONGO_MAP = new ConcurrentHashMap<>();
-    private static final Map<Long, CommentMongo> COMMENT_MONGO_MAP = new ConcurrentHashMap<>();
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
     private final EntityManagerFactory entityManagerFactory;
     private final ConvertService convertService;
     private final MongoTemplate mongoTemplate;
+    private final AuthorMongoCache authorMongoCache;
+    private final GenreMongoCache genreMongoCache;
+    private final BookMongoCache bookMongoCache;
+    private final CommentMongoCache commentMongoCache;
 
     @Bean
     public Job jpaToMongoJob(Step authorMongoToJpaStep, Step genreMongoToJpaStep,
@@ -75,25 +77,35 @@ public class JobConfig {
                 .reader(authorReader)
                 .processor(authorProcessor)
                 .writer(authorWriter)
-                .listener(new ChunkListener() {
+                .listener(new JobListener() {
                     @Override
-                    public void beforeChunk(@NonNull ChunkContext chunkContext) {
+                    public void beforeJob() {
                         List<AuthorMongo> authorMongoList = mongoTemplate.findAll(AuthorMongo.class);
                         authorMongoList.forEach(authorMongo -> {
-                            AUTHOR_MONGO_MAP.put(authorMongo.getSourceId(), authorMongo);
+                            authorMongoCache.put(authorMongo.getSourceId(), authorMongo);
                         });
                     }
 
                     @Override
-                    public void afterChunk(@NonNull ChunkContext chunkContext) {
-                        List<AuthorMongo> authorMongoList = mongoTemplate.findAll(AuthorMongo.class);
+                    public void afterJob() {
+
+                    }
+                })
+                .listener(new ItemWriteListener<>() {
+                    @Override
+                    public void beforeWrite(@NonNull List<? extends AuthorMongo> list) {
+
+                    }
+
+                    @Override
+                    public void afterWrite(@NonNull List<? extends AuthorMongo> authorMongoList) {
                         authorMongoList.forEach(authorMongo -> {
-                            AUTHOR_MONGO_MAP.put(authorMongo.getSourceId(), authorMongo);
+                            authorMongoCache.put(authorMongo.getSourceId(), authorMongo);
                         });
                     }
 
                     @Override
-                    public void afterChunkError(@NonNull ChunkContext chunkContext) {
+                    public void onWriteError(@NonNull Exception e, @NonNull List<? extends AuthorMongo> list) {
 
                     }
                 })
@@ -111,7 +123,7 @@ public class JobConfig {
 
     @Bean
     public ItemProcessor<AuthorJpa, AuthorMongo> authorProcessor() {
-        return authorJpa -> convertService.authorJpaToMongo(authorJpa, AUTHOR_MONGO_MAP);
+        return authorJpa -> convertService.authorJpaToMongo(authorJpa, authorMongoCache);
     }
 
     @Bean
@@ -133,25 +145,36 @@ public class JobConfig {
                 .reader(genreReader)
                 .processor(genreProcessor)
                 .writer(genreWriter)
-                .listener(new ChunkListener() {
+                .listener(new JobListener() {
                     @Override
-                    public void beforeChunk(@NonNull ChunkContext chunkContext) {
+                    public void beforeJob() {
                         List<GenreMongo> genreMongoList = mongoTemplate.findAll(GenreMongo.class);
                         genreMongoList.forEach(genreMongo -> {
-                            GENRE_MONGO_MAP.put(genreMongo.getSourceId(), genreMongo);
+                            genreMongoCache.put(genreMongo.getSourceId(), genreMongo);
                         });
                     }
 
                     @Override
-                    public void afterChunk(@NonNull ChunkContext chunkContext) {
-                        List<GenreMongo> genreMongoList = mongoTemplate.findAll(GenreMongo.class);
+                    public void afterJob() {
+
+                    }
+                })
+                .listener(new ItemWriteListener<>() {
+
+                    @Override
+                    public void beforeWrite(@NonNull List<? extends GenreMongo> list) {
+
+                    }
+
+                    @Override
+                    public void afterWrite(@NonNull List<? extends GenreMongo> genreMongoList) {
                         genreMongoList.forEach(genreMongo -> {
-                            GENRE_MONGO_MAP.put(genreMongo.getSourceId(), genreMongo);
+                            genreMongoCache.put(genreMongo.getSourceId(), genreMongo);
                         });
                     }
 
                     @Override
-                    public void afterChunkError(@NonNull ChunkContext chunkContext) {
+                    public void onWriteError(@NonNull Exception e, @NonNull List<? extends GenreMongo> list) {
 
                     }
                 })
@@ -169,7 +192,7 @@ public class JobConfig {
 
     @Bean
     public ItemProcessor<GenreJpa, GenreMongo> genreProcessor() {
-        return genreJpa -> convertService.genreJpaToMongo(genreJpa, GENRE_MONGO_MAP);
+        return genreJpa -> convertService.genreJpaToMongo(genreJpa, genreMongoCache);
     }
 
     @Bean
@@ -191,25 +214,36 @@ public class JobConfig {
                 .reader(bookReader)
                 .processor(bookProcessor)
                 .writer(bookWriter)
-                .listener(new ChunkListener() {
+                .listener(new JobListener() {
                     @Override
-                    public void beforeChunk(@NonNull ChunkContext chunkContext) {
+                    public void beforeJob() {
                         List<BookMongo> bookMongoList = mongoTemplate.findAll(BookMongo.class);
                         bookMongoList.forEach(bookMongo -> {
-                            BOOK_MONGO_MAP.put(bookMongo.getSourceId(), bookMongo);
+                            bookMongoCache.put(bookMongo.getSourceId(), bookMongo);
                         });
                     }
 
                     @Override
-                    public void afterChunk(@NonNull ChunkContext chunkContext) {
-                        List<BookMongo> bookMongoList = mongoTemplate.findAll(BookMongo.class);
+                    public void afterJob() {
+
+                    }
+                })
+                .listener(new ItemWriteListener<>() {
+
+                    @Override
+                    public void beforeWrite(@NonNull List<? extends BookMongo> list) {
+
+                    }
+
+                    @Override
+                    public void afterWrite(@NonNull List<? extends BookMongo> bookMongoList) {
                         bookMongoList.forEach(bookMongo -> {
-                            BOOK_MONGO_MAP.put(bookMongo.getSourceId(), bookMongo);
+                            bookMongoCache.put(bookMongo.getSourceId(), bookMongo);
                         });
                     }
 
                     @Override
-                    public void afterChunkError(@NonNull ChunkContext chunkContext) {
+                    public void onWriteError(@NonNull Exception e, @NonNull List<? extends BookMongo> list) {
 
                     }
                 })
@@ -227,7 +261,7 @@ public class JobConfig {
 
     @Bean
     public ItemProcessor<BookJpa, BookMongo> bookProcessor() {
-        return bookJpa -> convertService.bookJpaToMongo(bookJpa, BOOK_MONGO_MAP, AUTHOR_MONGO_MAP, GENRE_MONGO_MAP);
+        return bookJpa -> convertService.bookJpaToMongo(bookJpa, bookMongoCache, authorMongoCache, genreMongoCache);
     }
 
     @Bean
@@ -249,25 +283,35 @@ public class JobConfig {
                 .reader(commentReader)
                 .processor(commentProcessor)
                 .writer(commentWriter)
-                .listener(new ChunkListener() {
+                .listener(new JobListener() {
                     @Override
-                    public void beforeChunk(@NonNull ChunkContext chunkContext) {
+                    public void beforeJob() {
                         List<CommentMongo> commentMongoList = mongoTemplate.findAll(CommentMongo.class);
                         commentMongoList.forEach(commentMongo -> {
-                            COMMENT_MONGO_MAP.put(commentMongo.getSourceId(), commentMongo);
+                            commentMongoCache.put(commentMongo.getSourceId(), commentMongo);
                         });
                     }
 
                     @Override
-                    public void afterChunk(@NonNull ChunkContext chunkContext) {
-                        List<CommentMongo> commentMongoList = mongoTemplate.findAll(CommentMongo.class);
+                    public void afterJob() {
+
+                    }
+                })
+                .listener(new ItemWriteListener<>() {
+                    @Override
+                    public void beforeWrite(@NonNull List<? extends CommentMongo> list) {
+
+                    }
+
+                    @Override
+                    public void afterWrite(@NonNull List<? extends CommentMongo> commentMongoList) {
                         commentMongoList.forEach(commentMongo -> {
-                            COMMENT_MONGO_MAP.put(commentMongo.getSourceId(), commentMongo);
+                            commentMongoCache.put(commentMongo.getSourceId(), commentMongo);
                         });
                     }
 
                     @Override
-                    public void afterChunkError(@NonNull ChunkContext chunkContext) {
+                    public void onWriteError(@NonNull Exception e, @NonNull List<? extends CommentMongo> list) {
 
                     }
                 })
@@ -285,8 +329,8 @@ public class JobConfig {
 
     @Bean
     public ItemProcessor<CommentJpa, CommentMongo> commentProcessor() {
-        return commentJpa -> convertService.commentJpaToMongo(commentJpa, COMMENT_MONGO_MAP,
-                BOOK_MONGO_MAP, AUTHOR_MONGO_MAP, GENRE_MONGO_MAP);
+        return commentJpa -> convertService.commentJpaToMongo(commentJpa, commentMongoCache,
+                bookMongoCache, authorMongoCache, genreMongoCache);
     }
 
     @Bean
