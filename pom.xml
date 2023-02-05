@@ -23,6 +23,7 @@
         <module>hw-3-part-3-webflux</module>
         <module>hw-4-part-1-security</module>
         <module>hw-4-part-2-security-acl</module>
+        <module>hw-5-part-1-spring-batch</module>
     </modules>
 
 </project>
